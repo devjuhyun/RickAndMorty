@@ -9,6 +9,8 @@ import UIKit
 
 class RMCharacterViewController: UIViewController {
     
+    private let vm = RMCharacterViewModel()
+    
     // MARK: - UI Components
     private lazy var collectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -49,13 +51,16 @@ class RMCharacterViewController: UIViewController {
 
 extension RMCharacterViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        return vm.characters.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RMCharacterCollectionViewCell.indentifier, for: indexPath) as? RMCharacterCollectionViewCell else {
             fatalError("Failed to dequeue RMCharacterCollectionViewCell")
         }
+        
+        let character = vm.characters[indexPath.row]
+        cell.configure(with: character)
         
         return cell
     }
