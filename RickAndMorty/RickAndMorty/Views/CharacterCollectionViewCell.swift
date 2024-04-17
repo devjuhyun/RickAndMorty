@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 class CharacterCollectionViewCell: UICollectionViewCell {
     
@@ -17,7 +18,16 @@ class CharacterCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        imageView.kf.indicatorType = .activity
         return imageView
+    }()
+    
+    private let stackView: UIStackView = {
+        let stackview = UIStackView()
+        stackview.axis = .vertical
+        stackview.spacing = 4
+        stackview.distribution = .fill
+        return stackview
     }()
 
     private let nameLabel: UILabel = {
@@ -53,13 +63,16 @@ class CharacterCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+}
+
+extension CharacterCollectionViewCell {
     // MARK: - Helpers
     public func configure(with character: RMCharacter) {
         let url = URL(string: character.image)!
-        imageView.downloadImage(from: url)
-        nameLabel.text = character.name
-        speciesLabel.text = character.species
-        genderLabel.text = character.gender
+        self.imageView.kf.setImage(with: url)
+        self.nameLabel.text = character.name
+        self.speciesLabel.text = character.species
+        self.genderLabel.text = character.gender
     }
     
     private func setup() {
@@ -67,29 +80,21 @@ class CharacterCollectionViewCell: UICollectionViewCell {
     }
         
     private func layout() {
-        contentView.addSubviews(imageView, nameLabel, speciesLabel, genderLabel)
+        stackView.addArrangedSubview(nameLabel)
+        stackView.addArrangedSubview(speciesLabel)
+        stackView.addArrangedSubview(genderLabel)
+        
+        contentView.addSubview(imageView)
+        contentView.addSubview(stackView)
         
         imageView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(contentView)
         }
         
-        nameLabel.snp.makeConstraints { make in
+        stackView.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.bottom).offset(8)
             make.leading.equalTo(contentView).offset(8)
-            make.trailing.equalTo(contentView).offset(-8)
-        }
-        
-        speciesLabel.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(8)
-            make.leading.equalTo(contentView).offset(8)
-            make.trailing.equalTo(contentView).offset(-8)
-        }
-        
-        genderLabel.snp.makeConstraints { make in
-            make.top.equalTo(speciesLabel.snp.bottom).offset(8)
-            make.leading.equalTo(contentView).offset(8)
-            make.trailing.equalTo(contentView).offset(-8)
-            make.bottom.equalTo(contentView)
+            make.trailing.bottom.equalTo(contentView).offset(-8)
         }
     }
 }
