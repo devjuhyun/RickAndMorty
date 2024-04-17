@@ -1,5 +1,5 @@
 //
-//  RMCharacterViewModel.swift
+//  CharacterViewModel.swift
 //  RickAndMorty
 //
 //  Created by Juhyun Yun on 4/16/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RMCharacterViewModel {
+struct CharacterViewModel {
     var characters = [RMCharacter]()
     
     init(characters: [RMCharacter] = [RMCharacter]()) {

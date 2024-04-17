@@ -9,25 +9,26 @@
 /* Begin PBXBuildFile section */
 		6B8FB0422BCE4EE50038E1AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8FB0412BCE4EE50038E1AC /* AppDelegate.swift */; };
 		6B8FB0442BCE4EE50038E1AC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8FB0432BCE4EE50038E1AC /* SceneDelegate.swift */; };
-		6B8FB0462BCE4EE50038E1AC /* RMCharacterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8FB0452BCE4EE50038E1AC /* RMCharacterViewController.swift */; };
+		6B8FB0462BCE4EE50038E1AC /* CharacterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8FB0452BCE4EE50038E1AC /* CharacterViewController.swift */; };
 		6B8FB04B2BCE4EE60038E1AC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B8FB04A2BCE4EE60038E1AC /* Assets.xcassets */; };
 		6B8FB04E2BCE4EE60038E1AC /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 6B8FB04D2BCE4EE60038E1AC /* Base */; };
-		6BCE55392BCE653600FA29DB /* RMCharacterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCE55382BCE653600FA29DB /* RMCharacterCollectionViewCell.swift */; };
-		6BCE553D2BCE6AA200FA29DB /* RMCharacterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCE553C2BCE6AA200FA29DB /* RMCharacterViewModel.swift */; };
+		6BCE55392BCE653600FA29DB /* CharacterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCE55382BCE653600FA29DB /* CharacterCollectionViewCell.swift */; };
+		6BCE553D2BCE6AA200FA29DB /* CharacterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCE553C2BCE6AA200FA29DB /* CharacterViewModel.swift */; };
 		6BCE55402BCE6AD200FA29DB /* RMCharacter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCE553F2BCE6AD200FA29DB /* RMCharacter.swift */; };
 		6BCE55422BCE6FE300FA29DB /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCE55412BCE6FE300FA29DB /* Extentions.swift */; };
+		6BCE55472BCE765D00FA29DB /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6BCE55462BCE765D00FA29DB /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		6B8FB03E2BCE4EE50038E1AC /* RickAndMorty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RickAndMorty.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B8FB0412BCE4EE50038E1AC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6B8FB0432BCE4EE50038E1AC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		6B8FB0452BCE4EE50038E1AC /* RMCharacterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharacterViewController.swift; sourceTree = "<group>"; };
+		6B8FB0452BCE4EE50038E1AC /* CharacterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterViewController.swift; sourceTree = "<group>"; };
 		6B8FB04A2BCE4EE60038E1AC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6B8FB04D2BCE4EE60038E1AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6B8FB04F2BCE4EE60038E1AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6BCE55382BCE653600FA29DB /* RMCharacterCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharacterCollectionViewCell.swift; sourceTree = "<group>"; };
-		6BCE553C2BCE6AA200FA29DB /* RMCharacterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharacterViewModel.swift; sourceTree = "<group>"; };
+		6BCE55382BCE653600FA29DB /* CharacterCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterCollectionViewCell.swift; sourceTree = "<group>"; };
+		6BCE553C2BCE6AA200FA29DB /* CharacterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterViewModel.swift; sourceTree = "<group>"; };
 		6BCE553F2BCE6AD200FA29DB /* RMCharacter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharacter.swift; sourceTree = "<group>"; };
 		6BCE55412BCE6FE300FA29DB /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -37,6 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BCE55472BCE765D00FA29DB /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,7 +68,7 @@
 				6BCE553A2BCE654000FA29DB /* Views */,
 				6BCE55432BCE70BD00FA29DB /* Controllers */,
 				6BCE553B2BCE6A9500FA29DB /* ViewModels */,
-				6BCE55442BCE70FA00FA29DB /* Files */,
+				6BCE55482BCE78A400FA29DB /* Files */,
 			);
 			path = RickAndMorty;
 			sourceTree = "<group>";
@@ -74,7 +76,7 @@
 		6BCE553A2BCE654000FA29DB /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				6BCE55382BCE653600FA29DB /* RMCharacterCollectionViewCell.swift */,
+				6BCE55382BCE653600FA29DB /* CharacterCollectionViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -82,7 +84,7 @@
 		6BCE553B2BCE6A9500FA29DB /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				6BCE553C2BCE6AA200FA29DB /* RMCharacterViewModel.swift */,
+				6BCE553C2BCE6AA200FA29DB /* CharacterViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -98,22 +100,22 @@
 		6BCE55432BCE70BD00FA29DB /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				6B8FB0452BCE4EE50038E1AC /* RMCharacterViewController.swift */,
+				6B8FB0452BCE4EE50038E1AC /* CharacterViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
 		};
-		6BCE55442BCE70FA00FA29DB /* Files */ = {
+		6BCE55482BCE78A400FA29DB /* Files */ = {
 			isa = PBXGroup;
 			children = (
 				6B8FB0412BCE4EE50038E1AC /* AppDelegate.swift */,
 				6B8FB0432BCE4EE50038E1AC /* SceneDelegate.swift */,
 				6B8FB04A2BCE4EE60038E1AC /* Assets.xcassets */,
 				6B8FB04C2BCE4EE60038E1AC /* LaunchScreen.storyboard */,
-				6B8FB04F2BCE4EE60038E1AC /* Info.plist */,
 				6BCE55412BCE6FE300FA29DB /* Extentions.swift */,
+				6B8FB04F2BCE4EE60038E1AC /* Info.plist */,
 			);
-			path = Files;
+			name = Files;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -132,6 +134,9 @@
 			dependencies = (
 			);
 			name = RickAndMorty;
+			packageProductDependencies = (
+				6BCE55462BCE765D00FA29DB /* SnapKit */,
+			);
 			productName = RickAndMorty;
 			productReference = 6B8FB03E2BCE4EE50038E1AC /* RickAndMorty.app */;
 			productType = "com.apple.product-type.application";
@@ -160,6 +165,9 @@
 				Base,
 			);
 			mainGroup = 6B8FB0352BCE4EE50038E1AC;
+			packageReferences = (
+				6BCE55452BCE765D00FA29DB /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = 6B8FB03F2BCE4EE50038E1AC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -187,11 +195,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				6BCE55402BCE6AD200FA29DB /* RMCharacter.swift in Sources */,
-				6B8FB0462BCE4EE50038E1AC /* RMCharacterViewController.swift in Sources */,
-				6BCE55392BCE653600FA29DB /* RMCharacterCollectionViewCell.swift in Sources */,
+				6B8FB0462BCE4EE50038E1AC /* CharacterViewController.swift in Sources */,
+				6BCE55392BCE653600FA29DB /* CharacterCollectionViewCell.swift in Sources */,
 				6B8FB0422BCE4EE50038E1AC /* AppDelegate.swift in Sources */,
 				6B8FB0442BCE4EE50038E1AC /* SceneDelegate.swift in Sources */,
-				6BCE553D2BCE6AA200FA29DB /* RMCharacterViewModel.swift in Sources */,
+				6BCE553D2BCE6AA200FA29DB /* CharacterViewModel.swift in Sources */,
 				6BCE55422BCE6FE300FA29DB /* Extentions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -407,6 +415,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6BCE55452BCE765D00FA29DB /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6BCE55462BCE765D00FA29DB /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6BCE55452BCE765D00FA29DB /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6B8FB0362BCE4EE50038E1AC /* Project object */;
 }

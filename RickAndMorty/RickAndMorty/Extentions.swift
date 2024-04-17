@@ -7,6 +7,15 @@
 
 import UIKit
 
+extension UIView {
+    func addSubviews(_ views: UIView...) {
+        views.forEach({
+            addSubview($0)
+        })
+    }
+}
+
+
 extension UIImageView {
    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
       URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
