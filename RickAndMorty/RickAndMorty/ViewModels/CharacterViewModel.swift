@@ -7,12 +7,21 @@
 
 import Foundation
 
-struct CharacterViewModel {
-    var characters = [RMCharacter]()
+final class CharacterViewModel {
+    var characters: [RMCharacter] = []
     
-    init(characters: [RMCharacter] = [RMCharacter]()) {
-        for _ in 0..<20 {
-            self.characters.append(RMCharacter())
+    init() {
+        getCharacters()
+    }
+    
+    private func getCharacters() {
+        NetworkService.fetchCharacters { result in
+            switch result {
+            case .success(let characters):
+                self.characters = characters
+            case .failure(let error):
+                print(error)
+            }
         }
     }
 }

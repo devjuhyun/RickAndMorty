@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class CharacterViewController: UIViewController {
+final class CharacterViewController: UIViewController {
     
     private let vm = CharacterViewModel()
     
