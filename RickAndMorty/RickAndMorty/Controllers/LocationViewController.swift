@@ -10,12 +10,14 @@ import SnapKit
 
 final class LocationViewController: UIViewController {
     
+    private let vm = LocationViewModel()
+    
     // MARK: - UI Components
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.delegate = self
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+        tableView.register(LocationTableViewCell.self, forCellReuseIdentifier: LocationTableViewCell.identifier)
         tableView.dataSource = self
-        tableView.register(LocationCell.self, forCellReuseIdentifier: LocationCell.identifier)
+        tableView.delegate = self
         return tableView
     }()
     
@@ -44,15 +46,17 @@ final class LocationViewController: UIViewController {
 
 extension LocationViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return vm.location.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: LocationCell.identifier, for: indexPath) as? LocationCell else {
-            fatalError("Failed to dequeue LocationCell")
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: LocationTableViewCell.identifier, for: indexPath) as? LocationTableViewCell else {
+            fatalError("Failed to dequeue LocationTableViewCell")
         }
         
-        cell.textLabel?.text = "Hello, World"
+        let location = vm.location[indexPath.row]
+        cell.textLabel?.text = location.name
+        
         
         return cell
     }

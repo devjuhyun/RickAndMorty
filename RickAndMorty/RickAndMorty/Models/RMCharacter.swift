@@ -12,11 +12,4 @@ struct RMCharacter: Decodable {
     let species: String
     let gender: String
     let image: String
-    
-    init() {
-        self.name = "Morty Smith"
-        self.species = "Human"
-        self.gender = "Male"
-        self.image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg"
-    }
 }

@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct Response: Decodable {
+struct Response<T: Decodable>: Decodable {
     struct Info: Decodable {}
     let info: Info
-    let results: [RMCharacter]
+    let results: [T]
 }
