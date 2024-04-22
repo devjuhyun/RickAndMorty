@@ -30,8 +30,8 @@ final class LocationViewController: UIViewController {
     
     // MARK: - Helpers
     private func setup() {
-        view.backgroundColor = .systemBackground
-        navigationItem.title = "Location"
+        view.backgroundColor = .systemGroupedBackground
+        title = "Locations"
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
@@ -46,7 +46,7 @@ final class LocationViewController: UIViewController {
 
 extension LocationViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return vm.location.count
+        return vm.locations.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -54,7 +54,7 @@ extension LocationViewController: UITableViewDelegate, UITableViewDataSource {
             fatalError("Failed to dequeue LocationTableViewCell")
         }
         
-        let location = vm.location[indexPath.row]
+        let location = vm.locations[indexPath.row]
         cell.textLabel?.text = location.name
         
         

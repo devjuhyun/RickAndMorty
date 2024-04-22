@@ -21,7 +21,7 @@ class MainViewController: UITabBarController {
         vc1.tabBarItem = UITabBarItem(title: "Characters",
                                       image: UIImage(systemName: "person"),
                                       tag: 1)
-        vc2.tabBarItem = UITabBarItem(title: "Location",
+        vc2.tabBarItem = UITabBarItem(title: "Locations",
                                       image: UIImage(systemName: "globe"),
                                       tag: 2)
         

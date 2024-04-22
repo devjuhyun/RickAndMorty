@@ -32,7 +32,7 @@ final class CharacterViewController: UIViewController {
     }
     
     private func setup() {
-        navigationItem.title = "Characters"
+        title = "Characters"
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
     }
