@@ -7,7 +7,7 @@
 
 import Foundation
 
-@frozen enum RMError: Error {
+@frozen enum NetworkError: Error {
     case invalidURL
     case invalidData
     case decodingError
@@ -15,7 +15,7 @@ import Foundation
 }
 
 struct APIService {
-    static func fetch<T: Decodable>(urlString: String, type: T.Type, completion: @escaping (Result<[T], RMError>) -> Void) {
+    static func fetch<T: Decodable>(urlString: String, type: T.Type, completion: @escaping (Result<[T], NetworkError>) -> Void) {
         guard let url = URL(string: urlString) else {
             completion(.failure(.invalidURL))
             return
