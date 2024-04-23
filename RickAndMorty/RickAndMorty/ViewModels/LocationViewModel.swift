@@ -9,23 +9,21 @@ import Foundation
 
 final class LocationViewModel {
     var locations: [RMLocation] = []
-    var urlString: String {
-        return "https://rickandmortyapi.com/api/location/?page=\(page)"
-    }
+    private let requestManager = RequestManager()
     var page = 1
     
     init() {
-        getLocations()
+        Task {
+            await fetchLocations()
+        }
     }
     
-    private func getLocations() {
-        APIService.fetch(urlString: urlString, type: RMLocation.self) { result in
-            switch result {
-            case .success(let locations):
-                self.locations = locations
-            case .failure(let error):
-                print(error)
-            }
+    private func fetchLocations() async {
+        do {
+            let response: Response<RMLocation> = try await requestManager.perform(LocationRequest.getAllLocationsWith(page: page))
+            self.locations = response.results
+        } catch {
+            print(error)
         }
     }
 

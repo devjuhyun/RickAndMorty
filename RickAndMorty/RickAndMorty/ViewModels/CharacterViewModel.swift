@@ -9,23 +9,21 @@ import Foundation
 
 final class CharacterViewModel {
     var characters: [RMCharacter] = []
-    var urlString: String {
-        return "https://rickandmortyapi.com/api/character/?page=\(page)"
-    }
+    private let requestManager = RequestManager()
     var page = 1
     
     init() {
-        getCharacters()
+        Task {
+            await fetchCharacters()
+        }
     }
     
-    private func getCharacters() {
-        APIService.fetch(urlString: urlString, type: RMCharacter.self) { result in
-            switch result {
-            case .success(let characters):
-                self.characters = characters
-            case .failure(let error):
-                print(error)
-            }
+    private func fetchCharacters() async {
+        do {
+            let response: Response<RMCharacter> = try await requestManager.perform(CharacterRequest.getAllCharactersWith(page: page))
+            self.characters = response.results
+        } catch {
+            print(error.localizedDescription)
         }
     }
 }
