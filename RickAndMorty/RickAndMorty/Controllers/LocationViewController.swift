@@ -39,7 +39,7 @@ final class LocationViewController: UIViewController {
         view.addSubview(tableView)
         
         tableView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
+            make.edges.equalToSuperview()
         }
     }
 }
@@ -61,5 +61,12 @@ extension LocationViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if tableView.contentOffset.y > (tableView.contentSize.height - tableView.bounds.size.height) {
+            if !vm.shouldStopReloadData {
+                vm.fetchLocations()
+                tableView.reloadData()
+            }
+        }
+    }
 }

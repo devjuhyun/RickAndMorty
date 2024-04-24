@@ -8,7 +8,10 @@
 import Foundation
 
 struct Response<T: Decodable>: Decodable {
-    struct Info: Decodable {}
     let info: Info
     let results: [T]
+}
+
+struct Info: Decodable {
+    let pages: Int
 }

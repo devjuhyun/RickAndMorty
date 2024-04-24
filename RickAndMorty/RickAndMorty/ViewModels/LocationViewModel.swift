@@ -8,23 +8,33 @@
 import Foundation
 
 final class LocationViewModel {
-    var locations: [RMLocation] = []
+    @Published var locations: [RMLocation] = []
     private let requestManager = RequestManager()
+    var isFetching = false
+    var pageLimit = 100
     var page = 1
+    var shouldStopReloadData = false
     
     init() {
-        Task {
-            await fetchLocations()
-        }
+        fetchLocations()
     }
     
-    private func fetchLocations() async {
-        do {
-            let response: Response<RMLocation> = try await requestManager.perform(LocationRequest.getAllLocationsWith(page: page))
-            self.locations = response.results
-        } catch {
-            print(error)
+    func fetchLocations() {
+        Task {
+            do {
+                if !isFetching && page < pageLimit {
+                    isFetching = true
+                    page += 1
+                    let response: Response<RMLocation> = try await requestManager.perform(LocationRequest.getAllLocationsWith(page: page))
+                    self.locations.append(contentsOf: response.results)
+                    pageLimit = response.info.pages
+                    isFetching = false
+                } else {
+                    shouldStopReloadData = true
+                }
+            } catch {
+                print(error)
+            }
         }
     }
-
 }
