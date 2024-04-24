@@ -8,22 +8,29 @@
 import Foundation
 
 final class CharacterViewModel {
-    var characters: [RMCharacter] = []
-    private let requestManager = RequestManager()
-    var page = 1
+    @Published var characters: [RMCharacter] = []
+    private let requestManager: RequestManagerProtocol
+    private var shouldfetchCharacters = true
+    private var isFetching = false
+    private var page = 0
     
-    init() {
-        Task {
-            await fetchCharacters()
-        }
+    init(requestManager: RequestManagerProtocol = RequestManager()) {
+        self.requestManager = requestManager
+        fetchCharacters()
     }
     
-    private func fetchCharacters() async {
-        do {
-            let response: Response<RMCharacter> = try await requestManager.perform(CharacterRequest.getAllCharactersWith(page: page))
-            self.characters = response.results
-        } catch {
-            print(error.localizedDescription)
+    func fetchCharacters() {
+        guard shouldfetchCharacters else { return }
+        
+        Task {
+            do {
+                page += 1
+                let response: Response<RMCharacter> = try await requestManager.perform(CharacterRequest.getAllCharactersWith(page: page))
+                characters.append(contentsOf: response.results)
+                shouldfetchCharacters = response.info.next != nil
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
 }

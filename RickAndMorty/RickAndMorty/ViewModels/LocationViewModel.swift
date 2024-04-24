@@ -10,8 +10,8 @@ import Foundation
 final class LocationViewModel {
     @Published var locations: [RMLocation] = []
     private let requestManager: RequestManagerProtocol
-    private var isFetching = false
     private var shouldfetchLocations = true
+    private var isFetching = false
     private var page = 0
     
     init(requestManager: RequestManagerProtocol = RequestManager()) {

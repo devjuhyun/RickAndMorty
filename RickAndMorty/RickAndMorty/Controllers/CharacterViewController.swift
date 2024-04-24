@@ -7,10 +7,12 @@
 
 import UIKit
 import SnapKit
+import Combine
 
 final class CharacterViewController: UIViewController {
     
     private let vm = CharacterViewModel()
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
     private lazy var collectionView = {
@@ -20,10 +22,11 @@ final class CharacterViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.prefetchDataSource = self
         collectionView.register(CharacterCollectionViewCell.self, forCellWithReuseIdentifier: CharacterCollectionViewCell.indentifier)
         return collectionView
     }()
-
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +38,12 @@ final class CharacterViewController: UIViewController {
         title = "Characters"
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
+        
+        vm.$characters
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.collectionView.reloadData()
+            }.store(in: &cancellables)
     }
     
     private func layout() {
@@ -44,10 +53,10 @@ final class CharacterViewController: UIViewController {
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
-
+    
 }
 
-extension CharacterViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension CharacterViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return vm.characters.count
     }
@@ -67,11 +76,18 @@ extension CharacterViewController: UICollectionViewDelegate, UICollectionViewDat
         let bounds = collectionView.bounds
         let width: CGFloat
         width = (bounds.width-30)/2
-
+        
         return CGSize(
             width: width,
             height: width * 1.5
         )
     }
     
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            if vm.characters.count-1 == indexPath.row {
+                vm.fetchCharacters()
+            }
+        }
+    }
 }
