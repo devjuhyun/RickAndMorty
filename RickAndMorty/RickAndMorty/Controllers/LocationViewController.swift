@@ -7,15 +7,18 @@
 
 import UIKit
 import SnapKit
+import Combine
 
 final class LocationViewController: UIViewController {
     
     private let vm = LocationViewModel()
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.register(LocationTableViewCell.self, forCellReuseIdentifier: LocationTableViewCell.identifier)
+        tableView.prefetchDataSource = self
         tableView.dataSource = self
         tableView.delegate = self
         return tableView
@@ -33,6 +36,12 @@ final class LocationViewController: UIViewController {
         view.backgroundColor = .systemGroupedBackground
         title = "Locations"
         navigationController?.navigationBar.prefersLargeTitles = true
+        
+        vm.$locations
+            .receive(on: RunLoop.main)
+            .sink { [weak self] locations in
+                self?.tableView.reloadData()
+            }.store(in: &cancellables)
     }
     
     private func layout() {
@@ -44,7 +53,7 @@ final class LocationViewController: UIViewController {
     }
 }
 
-extension LocationViewController: UITableViewDelegate, UITableViewDataSource {
+extension LocationViewController: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return vm.locations.count
     }
@@ -61,12 +70,12 @@ extension LocationViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if tableView.contentOffset.y > (tableView.contentSize.height - tableView.bounds.size.height) {
-            if !vm.shouldStopReloadData {
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            if vm.locations.count-1 == indexPath.row {
                 vm.fetchLocations()
-                tableView.reloadData()
             }
         }
     }
+    
 }

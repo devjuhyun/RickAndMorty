@@ -14,4 +14,5 @@ struct Response<T: Decodable>: Decodable {
 
 struct Info: Decodable {
     let pages: Int
+    let next: String?
 }
