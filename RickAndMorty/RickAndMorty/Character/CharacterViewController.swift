@@ -79,7 +79,7 @@ extension CharacterViewController: UICollectionViewDelegate, UICollectionViewDat
         
         return CGSize(
             width: width,
-            height: width * 1.5
+            height: width * 1.3
         )
     }
     
