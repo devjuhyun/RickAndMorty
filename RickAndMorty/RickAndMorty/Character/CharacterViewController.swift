@@ -90,4 +90,11 @@ extension CharacterViewController: UICollectionViewDelegate, UICollectionViewDat
             }
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let character = vm.characters[indexPath.row]
+        let vm = CharacterDetailViewModel(charater: character)
+        let vc = CharacterDetailViewController(vm: vm)
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
