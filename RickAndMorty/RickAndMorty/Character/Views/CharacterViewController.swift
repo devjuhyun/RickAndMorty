@@ -63,7 +63,7 @@ extension CharacterViewController: UICollectionViewDelegate, UICollectionViewDat
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterCollectionViewCell.indentifier, for: indexPath) as? CharacterCollectionViewCell else {
-            fatalError("Failed to dequeue RMCharacterCollectionViewCell")
+            fatalError("Failed to dequeue CharacterCollectionViewCell")
         }
         
         let character = vm.characters[indexPath.row]
@@ -74,8 +74,7 @@ extension CharacterViewController: UICollectionViewDelegate, UICollectionViewDat
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let bounds = collectionView.bounds
-        let width: CGFloat
-        width = (bounds.width-30)/2
+        let width = (bounds.width-30)/2
         
         return CGSize(
             width: width,

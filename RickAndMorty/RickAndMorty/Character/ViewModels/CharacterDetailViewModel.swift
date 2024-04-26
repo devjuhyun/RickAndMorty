@@ -8,10 +8,19 @@
 import Foundation
 
 final class CharacterDetailViewModel {
-    let charater: RMCharacter
+    let character: RMCharacter
+    
+    lazy var collectionViewData = [
+        ["Status", character.status.text],
+        ["Gender", character.gender.text],
+        ["Species", character.species],
+        ["Created", character.createdString],
+        ["Origin", character.origin.name],
+        ["Location", character.location.name],
+    ]
     
     init(charater: RMCharacter) {
-        self.charater = charater
+        self.character = charater
     }
     
 }

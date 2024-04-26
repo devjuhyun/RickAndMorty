@@ -8,7 +8,7 @@
 import Foundation
 
 final class LocationViewModel {
-    @Published var locations: [RMLocation] = []
+    @Published var locations: [Location] = []
     private let requestManager: RequestManagerProtocol
     private var shouldfetchLocations = true
     private var isFetching = false
@@ -25,7 +25,7 @@ final class LocationViewModel {
         Task {
             do {
                 page += 1
-                let response: Response<RMLocation> = try await requestManager.perform(LocationRequest.getAllLocationsWith(page: page))
+                let response: Response<Location> = try await requestManager.perform(LocationRequest.getAllLocationsWith(page: page))
                 locations.append(contentsOf: response.results)
                 shouldfetchLocations = response.info.next != nil
             } catch {
