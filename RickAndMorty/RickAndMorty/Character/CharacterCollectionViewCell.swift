@@ -47,14 +47,7 @@ extension CharacterCollectionViewCell {
     // MARK: - Helpers
     public func configure(with character: RMCharacter) {
         guard let url = URL(string: character.image) else { return }
-        let processor = DownsamplingImageProcessor(size: imageView.bounds.size)
-        self.imageView.kf.setImage(with: url,
-                                   options:[
-                                    .transition(.fade(1)),
-                                    .processor(processor),
-                                    .scaleFactor(UIScreen.main.scale),
-                                    .cacheOriginalImage
-                                   ])
+        self.imageView.kf.setImage(with: url, options:[.transition(.fade(1))])
         self.nameLabel.text = character.name
     }
         
@@ -65,6 +58,7 @@ extension CharacterCollectionViewCell {
         imageView.snp.makeConstraints { make in
             make.top.leading.equalTo(contentView).offset(8)
             make.trailing.equalTo(contentView).offset(-8)
+            make.height.equalTo(200)
         }
         
         nameLabel.snp.makeConstraints { make in
