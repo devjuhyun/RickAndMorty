@@ -16,7 +16,7 @@ final class CharacterCollectionViewCell: UICollectionViewCell {
     // MARK: - UI Components
     private let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleToFill
         imageView.clipsToBounds = true
         imageView.kf.indicatorType = .activity
         imageView.layer.cornerRadius = 10

@@ -8,11 +8,10 @@
 import Foundation
 
 final class CharacterDetailViewModel {
-    private let charater: RMCharacter
+    let charater: RMCharacter
     
     init(charater: RMCharacter) {
         self.charater = charater
-        print(charater.name)
     }
     
 }
