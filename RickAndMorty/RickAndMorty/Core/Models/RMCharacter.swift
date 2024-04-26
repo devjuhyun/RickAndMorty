@@ -12,8 +12,8 @@ struct RMCharacter: Decodable {
     let status: Status
     let species: String
     let gender: Gender
-    let origin: LocationContainer
-    let location: LocationContainer
+    let origin: CharacterLocation
+    let location: CharacterLocation
     let image: String
     let episode: [String]
     let created: String
@@ -68,6 +68,6 @@ enum Gender: String, Codable {
     }
 }
 
-struct LocationContainer: Codable {
+struct CharacterLocation: Codable {
     let name: String
 }
