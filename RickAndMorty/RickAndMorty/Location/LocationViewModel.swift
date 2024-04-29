@@ -10,9 +10,9 @@ import Foundation
 final class LocationViewModel {
     @Published var locations: [Location] = []
     private let requestManager: RequestManagerProtocol
-    private var shouldfetchLocations = true
-    private var isFetching = false
+    private var canLoadMorePages = true
     private var page = 0
+    var searchText = ""
     
     init(requestManager: RequestManagerProtocol = RequestManager()) {
         self.requestManager = requestManager
@@ -20,17 +20,24 @@ final class LocationViewModel {
     }
     
     func fetchLocations() {
-        guard shouldfetchLocations else { return }
+        guard canLoadMorePages else { return }
         
         Task {
             do {
                 page += 1
-                let response: Response<Location> = try await requestManager.perform(APIRequest.getLocations(page: page))
+                let response: Response<Location> = try await requestManager.perform(APIRequest.getLocations(page: page, name: searchText))
                 locations.append(contentsOf: response.results)
-                shouldfetchLocations = response.info.next != nil
+                canLoadMorePages = response.info.next != nil
             } catch {
                 print(error.localizedDescription)
             }
         }
+    }
+    
+    func resetLocations() {
+        canLoadMorePages = true
+        searchText = ""
+        locations = []
+        page = 0
     }
 }

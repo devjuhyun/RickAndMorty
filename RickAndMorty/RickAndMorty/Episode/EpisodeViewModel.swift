@@ -25,7 +25,7 @@ final class EpisodeViewModel {
         Task {
             do {
                 page += 1
-                let response: Response<Episode> = try await requestManager.perform(APIRequest.getEpisodes(page: page))
+                let response: Response<Episode> = try await requestManager.perform(APIRequest.getEpisodes(page: page, name: ""))
                 episodes.append(contentsOf: response.results)
                 shouldfetchEpisodes = response.info.next != nil
             } catch {

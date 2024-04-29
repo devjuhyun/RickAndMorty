@@ -9,8 +9,8 @@ import Foundation
 
 enum APIRequest: Requestable {
     case getCharacters(page: Int, name: String?)
-    case getLocations(page: Int)
-    case getEpisodes(page: Int)
+    case getLocations(page: Int, name: String?)
+    case getEpisodes(page: Int, name: String?)
     
     var path: String {
         switch self {
@@ -28,11 +28,11 @@ enum APIRequest: Requestable {
         case let .getCharacters(page, name):
             let params = ["page" : String(page), "name" : name]
             return params
-        case let .getLocations(page):
-            let params = ["page": String(page)]
+        case let .getLocations(page, name):
+            let params = ["page" : String(page), "name" : name]
             return params
-        case let .getEpisodes(page):
-            let params = ["page": String(page)]
+        case let .getEpisodes(page, name):
+            let params = ["page" : String(page), "name" : name]
             return params
         }
     }

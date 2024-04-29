@@ -61,6 +61,15 @@ extension CharacterViewController {
             }.store(in: &cancellables)
     }
     
+    private func setSearchControllerListener() {
+        searchController.searchBar.searchTextField.textPublisher
+            .sink { [weak self] searchText in
+            self?.vm.resetCharacters()
+            self?.vm.searchText = searchText
+            self?.vm.fetchCharacters()
+        }.store(in: &cancellables)
+    }
+    
     private func layout() {
         view.addSubview(collectionView)
         
@@ -115,15 +124,6 @@ extension CharacterViewController: UICollectionViewDelegate, UICollectionViewDat
 
 // MARK: - UISearchController Methods
 extension CharacterViewController: UISearchBarDelegate {
-    private func setSearchControllerListener() {
-        searchController.searchBar.searchTextField.textPublisher
-            .sink { [weak self] searchText in
-            self?.vm.resetCharacters()
-            self?.vm.searchText = searchText
-            self?.vm.fetchCharacters()
-        }.store(in: &cancellables)
-    }
-    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         vm.resetCharacters()
         vm.fetchCharacters()

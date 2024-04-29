@@ -24,6 +24,13 @@ final class LocationViewController: UIViewController {
         return tableView
     }()
     
+    private lazy var searchController: UISearchController = {
+        let searchController = UISearchController()
+        searchController.searchBar.delegate = self
+        searchController.searchBar.placeholder = "Search locations"
+        return searchController
+    }()
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,17 +38,35 @@ final class LocationViewController: UIViewController {
         layout()
     }
     
+}
+
+extension LocationViewController {
     // MARK: - Helpers
     private func setup() {
         view.backgroundColor = .systemGroupedBackground
         title = "Locations"
         navigationController?.navigationBar.prefersLargeTitles = true
-        
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        bind()
+        setSearchControllerListener()
+    }
+    
+    private func bind() {
         vm.$locations
             .receive(on: RunLoop.main)
-            .sink { [weak self] locations in
+            .sink { [weak self] _ in
                 self?.tableView.reloadData()
             }.store(in: &cancellables)
+    }
+    
+    private func setSearchControllerListener() {
+        searchController.searchBar.searchTextField.textPublisher
+            .sink { [weak self] searchText in
+            self?.vm.resetLocations()
+            self?.vm.searchText = searchText
+            self?.vm.fetchLocations()
+        }.store(in: &cancellables)
     }
     
     private func layout() {
@@ -53,6 +78,7 @@ final class LocationViewController: UIViewController {
     }
 }
 
+// MARK: - UITableView Methods
 extension LocationViewController: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return vm.locations.count
@@ -77,5 +103,12 @@ extension LocationViewController: UITableViewDelegate, UITableViewDataSource, UI
             }
         }
     }
-    
+}
+
+// MARK: - UISearchController Methods
+extension LocationViewController: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        vm.resetLocations()
+        vm.fetchLocations()
+    }
 }
