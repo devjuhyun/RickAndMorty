@@ -10,9 +10,9 @@ import Foundation
 final class CharacterViewModel {
     @Published var characters: [RMCharacter] = []
     private let requestManager: RequestManagerProtocol
-    private var shouldfetchCharacters = true
-    private var isFetching = false
+    private var canLoadMorePages = true
     private var page = 0
+    var searchText = ""
     
     init(requestManager: RequestManagerProtocol = RequestManager()) {
         self.requestManager = requestManager
@@ -20,17 +20,24 @@ final class CharacterViewModel {
     }
     
     func fetchCharacters() {
-        guard shouldfetchCharacters else { return }
+        guard canLoadMorePages else { return }
         
         Task {
             do {
                 page += 1
-                let response: Response<RMCharacter> = try await requestManager.perform(CharacterRequest.getAllCharactersWith(page: page))
+                let response: Response<RMCharacter> = try await requestManager.perform(CharacterRequest.getCharacters(page: page, name: searchText))
                 characters.append(contentsOf: response.results)
-                shouldfetchCharacters = response.info.next != nil
+                canLoadMorePages = response.info.next != nil
             } catch {
                 print(error.localizedDescription)
             }
         }
+    }
+    
+    func resetCharacters() {
+        canLoadMorePages = true
+        searchText = ""
+        characters = []
+        page = 0
     }
 }

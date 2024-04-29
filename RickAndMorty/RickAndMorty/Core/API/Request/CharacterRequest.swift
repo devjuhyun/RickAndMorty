@@ -8,7 +8,7 @@
 import Foundation
 
 enum CharacterRequest: RequestProtocol {
-    case getAllCharactersWith(page: Int)
+    case getCharacters(page: Int, name: String?)
     
     var path: String {
         "/api/character"
@@ -16,8 +16,8 @@ enum CharacterRequest: RequestProtocol {
     
     var urlParams: [String: String?] {
         switch self {
-        case let .getAllCharactersWith(page):
-            let params = ["page": String(page)]
+        case let .getCharacters(page, name):
+            let params = ["page" : String(page), "name" : name]
             return params
         }
     }

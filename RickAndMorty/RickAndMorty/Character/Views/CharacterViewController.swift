@@ -27,18 +27,33 @@ final class CharacterViewController: UIViewController {
         return collectionView
     }()
     
+    private lazy var searchController: UISearchController = {
+        let searchController = UISearchController()
+        searchController.searchBar.delegate = self
+        searchController.searchBar.placeholder = "Search characters"
+        return searchController
+    }()
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
         layout()
     }
-    
+}
+
+extension CharacterViewController {
+    // MARK: - Helpers
     private func setup() {
         title = "Characters"
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
-        
+        navigationItem.searchController = searchController
+        bind()
+        setSearchControllerListener()
+    }
+    
+    private func bind() {
         vm.$characters
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
@@ -53,9 +68,9 @@ final class CharacterViewController: UIViewController {
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
-    
 }
 
+// MARK: - UICollectionView Methods
 extension CharacterViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return vm.characters.count
@@ -95,5 +110,22 @@ extension CharacterViewController: UICollectionViewDelegate, UICollectionViewDat
         let vm = CharacterDetailViewModel(charater: character)
         let vc = CharacterDetailViewController(vm: vm)
         navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+// MARK: - UISearchController Methods
+extension CharacterViewController: UISearchBarDelegate {
+    private func setSearchControllerListener() {
+        searchController.searchBar.searchTextField.textPublisher
+            .sink { [weak self] searchText in
+            self?.vm.resetCharacters()
+            self?.vm.searchText = searchText
+            self?.vm.fetchCharacters()
+        }.store(in: &cancellables)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        vm.resetCharacters()
+        vm.fetchCharacters()
     }
 }
