@@ -26,6 +26,13 @@ final class EpisodeViewController: UIViewController {
         return tableView
     }()
     
+    private lazy var searchController: UISearchController = {
+        let searchController = UISearchController()
+        searchController.searchBar.delegate = self
+        searchController.searchBar.placeholder = "Search episodes"
+        return searchController
+    }()
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,13 +45,29 @@ final class EpisodeViewController: UIViewController {
         view.backgroundColor = .systemGroupedBackground
         title = "Episodes"
         navigationController?.navigationBar.prefersLargeTitles = true
-        
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        bind()
+        setSearchControllerListener()
+    }
+    
+    private func bind() {
         vm.$episodes
             .receive(on: RunLoop.main)
-            .sink { [weak self] episodes in
+            .sink { [weak self] _ in
                 self?.tableView.reloadData()
             }.store(in: &cancellables)
     }
+    
+    private func setSearchControllerListener() {
+        searchController.searchBar.searchTextField.textPublisher
+            .sink { [weak self] searchText in
+            self?.vm.resetEpisodes()
+            self?.vm.searchText = searchText
+            self?.vm.fetchEpisodes()
+        }.store(in: &cancellables)
+    }
+
     
     private func layout() {
         view.addSubview(tableView)
@@ -79,4 +102,12 @@ extension EpisodeViewController: UITableViewDelegate, UITableViewDataSource, UIT
         }
     }
     
+}
+
+// MARK: - UISearchController Methods
+extension EpisodeViewController: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        vm.resetEpisodes()
+        vm.fetchEpisodes()
+    }
 }
