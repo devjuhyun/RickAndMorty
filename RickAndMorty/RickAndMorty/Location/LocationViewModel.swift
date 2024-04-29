@@ -25,7 +25,7 @@ final class LocationViewModel {
         Task {
             do {
                 page += 1
-                let response: Response<Location> = try await requestManager.perform(LocationRequest.getAllLocationsWith(page: page))
+                let response: Response<Location> = try await requestManager.perform(APIRequest.getLocations(page: page))
                 locations.append(contentsOf: response.results)
                 shouldfetchLocations = response.info.next != nil
             } catch {

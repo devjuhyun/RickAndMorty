@@ -1,5 +1,5 @@
 //
-//  RequestProtocol.swift
+//  Requestable.swift
 //  RickAndMorty
 //
 //  Created by Juhyun Yun on 4/23/24.
@@ -7,13 +7,13 @@
 
 import Foundation
 
-protocol RequestProtocol {
+protocol Requestable {
     var path: String { get }
     var urlParams: [String: String?] { get }
     var requestType: RequestType { get }
 }
 
-extension RequestProtocol {
+extension Requestable {
     // base url
     var host: String {
         APIConstants.host

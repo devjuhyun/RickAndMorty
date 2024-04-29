@@ -25,7 +25,7 @@ final class CharacterViewModel {
         Task {
             do {
                 page += 1
-                let response: Response<RMCharacter> = try await requestManager.perform(CharacterRequest.getCharacters(page: page, name: searchText))
+                let response: Response<RMCharacter> = try await requestManager.perform(APIRequest.getCharacters(page: page, name: searchText))
                 characters.append(contentsOf: response.results)
                 canLoadMorePages = response.info.next != nil
             } catch {

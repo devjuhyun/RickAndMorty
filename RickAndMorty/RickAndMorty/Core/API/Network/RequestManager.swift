@@ -8,7 +8,7 @@
 import Foundation
 
 protocol RequestManagerProtocol {
-    func perform<T: Decodable>(_ request: RequestProtocol) async throws -> T
+    func perform<T: Decodable>(_ request: Requestable) async throws -> T
 }
 
 class RequestManager: RequestManagerProtocol {
@@ -23,7 +23,7 @@ class RequestManager: RequestManagerProtocol {
         self.parser = parser
     }
     
-    func perform<T: Decodable>(_ request: RequestProtocol) async throws -> T {
+    func perform<T: Decodable>(_ request: Requestable) async throws -> T {
         let data = try await apiManager.perform(request)
         let decoded: T = try parser.parse(data: data)
         return decoded
