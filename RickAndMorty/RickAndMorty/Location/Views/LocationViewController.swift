@@ -103,6 +103,13 @@ extension LocationViewController: UITableViewDelegate, UITableViewDataSource, UI
             }
         }
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let location = vm.locations[indexPath.row]
+        let vm = LocationDetailViewModel(location: location)
+        let vc = LocationDetailViewController(vm: vm)
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 // MARK: - UISearchController Methods
