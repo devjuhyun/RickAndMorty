@@ -90,7 +90,7 @@ extension CharacterDetailViewController: UICollectionViewDelegate, UICollectionV
             fatalError("Failed to dequeue InfoCollectionViewCell")
         }
         
-        let data = vm.collectionViewData[indexPath.row]
+        let data = vm.characterInfo[indexPath.row]
         cell.configure(title: data[0], value: data[1])
         
         return cell

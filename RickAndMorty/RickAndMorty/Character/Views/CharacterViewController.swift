@@ -49,6 +49,7 @@ extension CharacterViewController {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
         bind()
         setSearchControllerListener()
     }
@@ -100,10 +101,7 @@ extension CharacterViewController: UICollectionViewDelegate, UICollectionViewDat
         let bounds = collectionView.bounds
         let width = (bounds.width-30)/2
         
-        return CGSize(
-            width: width,
-            height: width * 1.3
-        )
+        return CGSize(width: width, height: width * 1.3)
     }
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {

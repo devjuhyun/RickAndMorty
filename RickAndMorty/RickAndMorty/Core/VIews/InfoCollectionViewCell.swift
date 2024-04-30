@@ -11,7 +11,7 @@ final class InfoCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "InfoCollectionViewCell"
     
-    // MARK: - UIComponents
+    // MARK: - UI Components
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 18)

@@ -10,7 +10,7 @@ import Foundation
 final class CharacterDetailViewModel {
     let character: RMCharacter
     
-    lazy var collectionViewData = [
+    lazy var characterInfo = [
         ["Status", character.status.text],
         ["Gender", character.gender.text],
         ["Species", character.species],

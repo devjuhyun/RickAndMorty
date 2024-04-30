@@ -41,6 +41,7 @@
 		6BCE554B2BCFAAAF00FA29DB /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 6BCE554A2BCFAAAF00FA29DB /* Kingfisher */; };
 		6BE038512BDF99C40019CE3F /* LocationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE038502BDF99C40019CE3F /* LocationDetailViewController.swift */; };
 		6BE038552BDF9AD80019CE3F /* LocationDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE038542BDF9AD80019CE3F /* LocationDetailViewModel.swift */; };
+		6BE038572BE0985D0019CE3F /* CustomCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE038562BE0985D0019CE3F /* CustomCollectionReusableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +79,7 @@
 		6BCE553F2BCE6AD200FA29DB /* RMCharacter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharacter.swift; sourceTree = "<group>"; };
 		6BE038502BDF99C40019CE3F /* LocationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDetailViewController.swift; sourceTree = "<group>"; };
 		6BE038542BDF9AD80019CE3F /* LocationDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDetailViewModel.swift; sourceTree = "<group>"; };
+		6BE038562BE0985D0019CE3F /* CustomCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionReusableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				6BC8AF1A2BDB680900FC8408 /* InfoCollectionViewCell.swift */,
+				6BE038562BE0985D0019CE3F /* CustomCollectionReusableView.swift */,
 			);
 			path = VIews;
 			sourceTree = "<group>";
@@ -392,6 +395,7 @@
 				6B9370102BD0BF1A00EA17F4 /* Response.swift in Sources */,
 				6B1A97BD2BD79E71009E43A0 /* RequestManager.swift in Sources */,
 				6B1A97B52BD79273009E43A0 /* Requestable.swift in Sources */,
+				6BE038572BE0985D0019CE3F /* CustomCollectionReusableView.swift in Sources */,
 				6B1A97B72BD79297009E43A0 /* RequestType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
