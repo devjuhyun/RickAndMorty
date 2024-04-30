@@ -106,6 +106,12 @@ extension EpisodeViewController: UITableViewDelegate, UITableViewDataSource, UIT
         }
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let episode = vm.episodes[indexPath.row]
+        let vm = EpisodeDetailViewModel(episode: episode)
+        let vc = EpisodeDetailViewController(vm: vm)
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 // MARK: - UISearchController Methods
