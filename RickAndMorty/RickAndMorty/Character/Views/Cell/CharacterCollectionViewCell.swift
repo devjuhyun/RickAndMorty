@@ -58,7 +58,6 @@ extension CharacterCollectionViewCell {
         imageView.snp.makeConstraints { make in
             make.top.leading.equalTo(contentView).offset(8)
             make.trailing.equalTo(contentView).offset(-8)
-            make.height.equalTo(200)
         }
         
         nameLabel.snp.makeConstraints { make in
@@ -66,6 +65,8 @@ extension CharacterCollectionViewCell {
             make.leading.equalTo(contentView).offset(8)
             make.trailing.bottom.equalTo(contentView).offset(-8)
         }
+        
+        nameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
     
     override func prepareForReuse() {
