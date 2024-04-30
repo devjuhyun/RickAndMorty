@@ -89,9 +89,13 @@ extension EpisodeViewController: UITableViewDelegate, UITableViewDataSource, UIT
         }
         
         let episode = vm.episodes[indexPath.row]
-        cell.textLabel?.text = "\(episode.episode) - \(episode.name)"
+        cell.configure(episode: episode)
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
     }
     
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {

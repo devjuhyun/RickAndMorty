@@ -16,7 +16,6 @@
 		6B1A97C52BD7A17A009E43A0 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1A97C42BD7A17A009E43A0 /* APIRequest.swift */; };
 		6B539B102BD0DAB800DF8DDE /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B539B0F2BD0DAB800DF8DDE /* MainViewController.swift */; };
 		6B539B122BD5FE0F00DF8DDE /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B539B112BD5FE0F00DF8DDE /* LocationViewController.swift */; };
-		6B539B142BD5FF0600DF8DDE /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B539B132BD5FF0600DF8DDE /* LocationTableViewCell.swift */; };
 		6B539B162BD6027A00DF8DDE /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B539B152BD6027A00DF8DDE /* LocationViewModel.swift */; };
 		6B539B182BD602C000DF8DDE /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B539B172BD602C000DF8DDE /* Location.swift */; };
 		6B8FB0422BCE4EE50038E1AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8FB0412BCE4EE50038E1AC /* AppDelegate.swift */; };
@@ -54,7 +53,6 @@
 		6B1A97C42BD7A17A009E43A0 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		6B539B0F2BD0DAB800DF8DDE /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		6B539B112BD5FE0F00DF8DDE /* LocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
-		6B539B132BD5FF0600DF8DDE /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
 		6B539B152BD6027A00DF8DDE /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 		6B539B172BD602C000DF8DDE /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		6B8FB03E2BCE4EE50038E1AC /* RickAndMorty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RickAndMorty.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -221,9 +219,8 @@
 		6BC8AF1C2BDB897400FC8408 /* Episode */ = {
 			isa = PBXGroup;
 			children = (
-				6BC8AF1D2BDB898400FC8408 /* EpisodeViewController.swift */,
-				6BC8AF212BDB89EE00FC8408 /* EpisodeTableViewCell.swift */,
-				6BC8AF1F2BDB89B700FC8408 /* EpisodeViewModel.swift */,
+				6BE038592BE0AEAA0019CE3F /* Views */,
+				6BE0385A2BE0AEB30019CE3F /* ViewModels */,
 			);
 			path = Episode;
 			sourceTree = "<group>";
@@ -261,18 +258,9 @@
 			name = Files;
 			sourceTree = "<group>";
 		};
-		6BE0384F2BDF99660019CE3F /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				6B539B132BD5FF0600DF8DDE /* LocationTableViewCell.swift */,
-			);
-			path = Cell;
-			sourceTree = "<group>";
-		};
 		6BE038522BDF99D00019CE3F /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				6BE0384F2BDF99660019CE3F /* Cell */,
 				6B539B112BD5FE0F00DF8DDE /* LocationViewController.swift */,
 				6BE038502BDF99C40019CE3F /* LocationDetailViewController.swift */,
 			);
@@ -284,6 +272,31 @@
 			children = (
 				6B539B152BD6027A00DF8DDE /* LocationViewModel.swift */,
 				6BE038542BDF9AD80019CE3F /* LocationDetailViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		6BE038582BE0AE9F0019CE3F /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				6BC8AF212BDB89EE00FC8408 /* EpisodeTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		6BE038592BE0AEAA0019CE3F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6BE038582BE0AE9F0019CE3F /* Cell */,
+				6BC8AF1D2BDB898400FC8408 /* EpisodeViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		6BE0385A2BE0AEB30019CE3F /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				6BC8AF1F2BDB89B700FC8408 /* EpisodeViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -382,7 +395,6 @@
 				6B539B122BD5FE0F00DF8DDE /* LocationViewController.swift in Sources */,
 				6B539B182BD602C000DF8DDE /* Location.swift in Sources */,
 				6BC8AF122BDA48A600FC8408 /* CharacterDetailViewController.swift in Sources */,
-				6B539B142BD5FF0600DF8DDE /* LocationTableViewCell.swift in Sources */,
 				6B1A97C52BD7A17A009E43A0 /* APIRequest.swift in Sources */,
 				6B539B162BD6027A00DF8DDE /* LocationViewModel.swift in Sources */,
 				6B8FB0442BCE4EE50038E1AC /* SceneDelegate.swift in Sources */,

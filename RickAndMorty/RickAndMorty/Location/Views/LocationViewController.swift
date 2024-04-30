@@ -17,7 +17,7 @@ final class LocationViewController: UIViewController {
     // MARK: - UI Components
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.register(LocationTableViewCell.self, forCellReuseIdentifier: LocationTableViewCell.identifier)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.prefetchDataSource = self
         tableView.dataSource = self
         tableView.delegate = self
@@ -37,7 +37,6 @@ final class LocationViewController: UIViewController {
         setup()
         layout()
     }
-    
 }
 
 extension LocationViewController {
@@ -85,15 +84,17 @@ extension LocationViewController: UITableViewDelegate, UITableViewDataSource, UI
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: LocationTableViewCell.identifier, for: indexPath) as? LocationTableViewCell else {
-            fatalError("Failed to dequeue LocationTableViewCell")
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         
         let location = vm.locations[indexPath.row]
         cell.textLabel?.text = location.name
-        
+        cell.accessoryType = .disclosureIndicator
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
     }
     
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
