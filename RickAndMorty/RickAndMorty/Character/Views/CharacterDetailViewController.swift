@@ -10,7 +10,12 @@ import Kingfisher
 
 final class CharacterDetailViewController: UIViewController {
     
+    private enum Section {
+        case info
+    }
+    
     private let vm: CharacterDetailViewModel
+    private var dataSource: UICollectionViewDiffableDataSource<Section, [String]>! = nil
     
     // MARK: - UI Components
     private let imageView: UIImageView = {
@@ -23,12 +28,8 @@ final class CharacterDetailViewController: UIViewController {
     }()
     
     private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
-        layout.scrollDirection = .vertical
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        let collectionView = UICollectionView(frame: .zero,
+                                              collectionViewLayout: createLayout())
         collectionView.register(InfoCollectionViewCell.self, forCellWithReuseIdentifier: InfoCollectionViewCell.identifier)
         return collectionView
     }()
@@ -55,6 +56,7 @@ final class CharacterDetailViewController: UIViewController {
         navigationItem.title = vm.character.name
         navigationItem.largeTitleDisplayMode = .never
         setupViews()
+        configureDataSource()
     }
     
     private func layout() {
@@ -80,27 +82,43 @@ final class CharacterDetailViewController: UIViewController {
     }
 }
 
-extension CharacterDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 6
+// MARK: - UICollectionView Methods
+extension CharacterDetailViewController {
+    private func configureDataSource() {
+        dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, info in
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: InfoCollectionViewCell.identifier,
+                for: indexPath) as? InfoCollectionViewCell else {
+                fatalError("Failed to dequeue InfoCollectionViewCell.")
+            }
+            
+            cell.configure(title: info[0], value: info[1])
+            return cell
+        })
+        
+        var snapshot = NSDiffableDataSourceSnapshot<Section, [String]>()
+        snapshot.appendSections([.info])
+        snapshot.appendItems(vm.characterInfo)
+        dataSource.apply(snapshot, animatingDifferences: false)
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InfoCollectionViewCell.identifier, for: indexPath) as? InfoCollectionViewCell else {
-            fatalError("Failed to dequeue InfoCollectionViewCell")
-        }
+    private func createLayout() -> UICollectionViewLayout {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5),
+                                              heightDimension: .fractionalHeight(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let data = vm.characterInfo[indexPath.row]
-        cell.configure(title: data[0], value: data[1])
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                               heightDimension: .absolute(80))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
+                                                       repeatingSubitem: item,
+                                                       count: 2)
+        let spacing = CGFloat(10)
+        group.interItemSpacing = .fixed(spacing)
         
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let bounds = collectionView.bounds
-        let width = (bounds.width-30)/2
+        let section = NSCollectionLayoutSection(group: group)
         
-        return CGSize(width: width, height: 80)
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
     }
     
 }
