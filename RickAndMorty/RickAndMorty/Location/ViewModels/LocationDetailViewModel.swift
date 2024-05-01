@@ -39,8 +39,7 @@ final class LocationDetailViewModel {
         
         Task {
             do {
-                let characters: [RMCharacter] = try await requestManager.perform(APIRequest.getMulitpleCharacters(ids: ids))
-                self.residents = characters
+                residents = try await requestManager.perform(APIRequest.getCharacters(ids: ids))
             } catch {
                 print(error.localizedDescription)
             }

@@ -12,6 +12,7 @@ enum APIRequest: Requestable {
     case getMulitpleCharacters(ids: [Int])
     case getLocations(page: Int, name: String?)
     case getEpisodes(page: Int, name: String?)
+    case getMulitpleEpisodes(ids: [Int])
     
     var path: String {
         switch self {
@@ -23,6 +24,8 @@ enum APIRequest: Requestable {
             return "/api/location"
         case .getEpisodes:
             return "/api/episode"
+        case let .getMulitpleEpisodes(ids):
+            return "/api/episode/\(ids)"
         }
     }
     
@@ -39,6 +42,8 @@ enum APIRequest: Requestable {
         case let .getEpisodes(page, name):
             let params = ["page" : String(page), "name" : name]
             return params
+        case .getMulitpleEpisodes(ids: let ids):
+            return [:]
         }
     }
     

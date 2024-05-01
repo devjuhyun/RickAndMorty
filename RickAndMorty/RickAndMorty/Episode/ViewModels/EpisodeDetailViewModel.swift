@@ -28,7 +28,7 @@ final class EpisodeDetailViewModel {
     private func fetchCharacters() {
         Task {
             do {
-                let characters: [RMCharacter] = try await requestManager.perform(APIRequest.getMulitpleCharacters(ids: ids))
+                let characters: [RMCharacter] = try await requestManager.perform(APIRequest.getCharacters(ids: ids))
                 self.characters = characters
             } catch {
                 print(error.localizedDescription)
