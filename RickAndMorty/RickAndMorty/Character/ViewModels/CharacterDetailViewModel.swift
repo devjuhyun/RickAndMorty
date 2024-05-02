@@ -7,6 +7,29 @@
 
 import Foundation
 
+public enum SectionType: Int {
+    case info
+    case episode
+    
+    var groupHeight: Double {
+        switch self {
+        case .info:
+            return 0.2
+        case .episode:
+            return 1.3
+        }
+    }
+    
+    var headerHeight: Double {
+        switch self {
+        case .info:
+            return 0.7
+        case .episode:
+            return 0.2
+        }
+    }
+}
+
 final class CharacterDetailViewModel {
     let character: RMCharacter
     @Published var episodes: [Episode] = []
@@ -40,7 +63,6 @@ final class CharacterDetailViewModel {
         Task {
             do {
                 episodes = try await requestManager.perform(APIRequest.getMulitpleEpisodes(ids: ids))
-                print(episodes)
             } catch {
                 print(error.localizedDescription)
             }

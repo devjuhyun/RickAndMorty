@@ -9,7 +9,7 @@ import Foundation
 
 enum APIRequest: Requestable {
     case getCharacters(page: Int, name: String?)
-    case getMulitpleCharacters(ids: [Int])
+    case getMultipleCharacters(ids: [Int])
     case getLocations(page: Int, name: String?)
     case getEpisodes(page: Int, name: String?)
     case getMulitpleEpisodes(ids: [Int])
@@ -18,7 +18,7 @@ enum APIRequest: Requestable {
         switch self {
         case .getCharacters:
             return "/api/character"
-        case let .getMulitpleCharacters(ids):
+        case let .getMultipleCharacters(ids):
             return "/api/character/\(ids)"
         case .getLocations:
             return "/api/location"
@@ -34,7 +34,7 @@ enum APIRequest: Requestable {
         case let .getCharacters(page, name):
             let params = ["page" : String(page), "name" : name]
             return params
-        case .getMulitpleCharacters:
+        case .getMultipleCharacters:
             return [:]
         case let .getLocations(page, name):
             let params = ["page" : String(page), "name" : name]

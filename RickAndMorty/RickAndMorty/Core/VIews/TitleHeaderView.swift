@@ -7,9 +7,9 @@
 
 import UIKit
 
-final class CustomCollectionReusableView: UICollectionReusableView {
+final class TitleHeaderView: UICollectionReusableView {
     
-    static let identifier = "CustomCollectionReusableView"
+    static let identifier = "TitleHeaderView"
     
     // MARK: - UI Components
     private let label: UILabel = {
@@ -30,7 +30,7 @@ final class CustomCollectionReusableView: UICollectionReusableView {
     }
 }
 
-extension CustomCollectionReusableView {
+extension TitleHeaderView {
     private func layout() {
         addSubview(label)
         

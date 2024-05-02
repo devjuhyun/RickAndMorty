@@ -39,7 +39,7 @@ final class LocationDetailViewModel {
         
         Task {
             do {
-                residents = try await requestManager.perform(APIRequest.getCharacters(ids: ids))
+                residents = try await requestManager.perform(APIRequest.getMultipleCharacters(ids: ids))
             } catch {
                 print(error.localizedDescription)
             }

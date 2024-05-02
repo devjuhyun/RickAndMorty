@@ -21,7 +21,7 @@ final class EpisodeDetailViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(CustomCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CustomCollectionReusableView.identifier)
+        collectionView.register(TitleHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleHeaderView.identifier)
         collectionView.register(CharacterCollectionViewCell.self, forCellWithReuseIdentifier: CharacterCollectionViewCell.indentifier)
         return collectionView
     }()
@@ -95,10 +95,10 @@ extension EpisodeDetailViewController: UICollectionViewDelegate, UICollectionVie
         guard kind == UICollectionView.elementKindSectionHeader,
               let header = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
-                withReuseIdentifier: CustomCollectionReusableView.identifier,
+                withReuseIdentifier: TitleHeaderView.identifier,
                 for: indexPath
-              ) as? CustomCollectionReusableView else {
-            fatalError("Failed to dequeue CustomCollectionReusableView")
+              ) as? TitleHeaderView else {
+            fatalError("Failed to dequeue TitleHeaderView")
         }
         
         header.configure(title: "Appearances")

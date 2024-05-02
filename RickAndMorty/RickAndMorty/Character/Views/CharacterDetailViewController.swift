@@ -6,34 +6,23 @@
 //
 
 import UIKit
-import Kingfisher
+import Combine
 
 final class CharacterDetailViewController: UIViewController {
-    
-    private enum Section {
-        case info
-    }
-    
+    // MARK: - Properties
     private let vm: CharacterDetailViewModel
-    private var dataSource: UICollectionViewDiffableDataSource<Section, [String]>! = nil
+    private var cancellables = Set<AnyCancellable>()
+    private var dataSource: DiffableDataSource! = nil
+    
+    private typealias DiffableDataSource = UICollectionViewDiffableDataSource<SectionType, AnyHashable>
+    private typealias InfoCellRegistration = UICollectionView.CellRegistration<InfoCollectionViewCell, [String]>
+    private typealias EpisodeCellRegistration = UICollectionView.CellRegistration<InfoCollectionViewCell, Episode>
+    private typealias ImageHeaderRegistration = UICollectionView.SupplementaryRegistration<ImageHeaderView>
+    private typealias TitleHeaderRegistration = UICollectionView.SupplementaryRegistration<TitleHeaderView>
     
     // MARK: - UI Components
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 10
-        imageView.clipsToBounds = true
-        imageView.kf.indicatorType = .activity
-        return imageView
-    }()
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
     
-    private lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero,
-                                              collectionViewLayout: createLayout())
-        collectionView.register(InfoCollectionViewCell.self, forCellWithReuseIdentifier: InfoCollectionViewCell.identifier)
-        return collectionView
-    }()
-        
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,69 +44,108 @@ final class CharacterDetailViewController: UIViewController {
         view.backgroundColor = .systemBackground
         navigationItem.title = vm.character.name
         navigationItem.largeTitleDisplayMode = .never
-        setupViews()
-        configureDataSource()
+        bind()
+        configureCollectionView()
+        configureCell()
+        configureHeader()
+        updateSnapshot()
+    }
+    
+    private func bind() {
+        vm.$episodes
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.updateSnapshot()
+            }.store(in: &cancellables)
     }
     
     private func layout() {
-        view.addSubview(imageView)
         view.addSubview(collectionView)
         
-        imageView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
-            make.centerX.equalTo(view.snp.centerX)
-            make.width.equalTo(view.bounds.width/2)
-            make.height.equalTo(250)
-        }
-        
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(16)
-            make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.top.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         }
-    }
-    
-    private func setupViews() {
-        guard let url = URL(string: vm.character.image) else { return }
-        imageView.kf.setImage(with: url)
     }
 }
 
-// MARK: - UICollectionView Methods
+// MARK: - UICollectionView Configuration
 extension CharacterDetailViewController {
-    private func configureDataSource() {
-        dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, info in
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: InfoCollectionViewCell.identifier,
-                for: indexPath) as? InfoCollectionViewCell else {
-                fatalError("Failed to dequeue InfoCollectionViewCell.")
-            }
-            
+    func configureCollectionView() {
+        collectionView.register(ImageHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ImageHeaderView.identifier)
+        collectionView.register(InfoCollectionViewCell.self, forCellWithReuseIdentifier: InfoCollectionViewCell.identifier)
+        collectionView.register(TitleHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleHeaderView.identifier)
+    }
+    
+    private func configureCell() {
+        let infoCellRegistration = InfoCellRegistration { (cell, indexPath, info) in
             cell.configure(title: info[0], value: info[1])
-            return cell
-        })
+        }
         
-        var snapshot = NSDiffableDataSourceSnapshot<Section, [String]>()
+        let episodeCellRegistration = EpisodeCellRegistration { (cell, indexPath, episode) in
+            cell.configure(title: episode.name, value: episode.episode)
+        }
+        
+        dataSource = DiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
+            guard let sectionType = SectionType(rawValue: indexPath.section) else { fatalError("SectionType is nil") }
+            
+            switch sectionType {
+            case .info:
+                return collectionView.dequeueConfiguredReusableCell(using: infoCellRegistration, for: indexPath, item: item as? [String])
+            case .episode:
+                return collectionView.dequeueConfiguredReusableCell(using: episodeCellRegistration, for: indexPath, item: item as? Episode)
+            }
+        })
+    }
+    
+    private func configureHeader() {
+        let imageHeaderRegistration = ImageHeaderRegistration(elementKind: UICollectionView.elementKindSectionHeader) { imageHeaderView, elementKind, indexPath in
+            imageHeaderView.configure(imageString: self.vm.character.image)
+        }
+        
+        let titleHeaderRegistration = TitleHeaderRegistration(elementKind: UICollectionView.elementKindSectionHeader) { titleHeaderView, elementKind, indexPath in
+            titleHeaderView.configure(title: "Episodes")
+        }
+        
+        dataSource.supplementaryViewProvider = { (collectionView, kind, indexPath) in
+            guard let sectionType = SectionType(rawValue: indexPath.section) else { fatalError("SectionType is nil") }
+            switch sectionType {
+            case .info:
+                return collectionView.dequeueConfiguredReusableSupplementary(using: imageHeaderRegistration, for: indexPath)
+            case .episode:
+                return collectionView.dequeueConfiguredReusableSupplementary(using: titleHeaderRegistration, for: indexPath)
+            }
+        }
+    }
+    
+    private func updateSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<SectionType, AnyHashable>()
         snapshot.appendSections([.info])
         snapshot.appendItems(vm.characterInfo)
+        snapshot.appendSections([.episode])
+        snapshot.appendItems(vm.episodes)
         dataSource.apply(snapshot, animatingDifferences: false)
     }
     
     private func createLayout() -> UICollectionViewLayout {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5),
-                                              heightDimension: .fractionalHeight(1.0))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let layout = UICollectionViewCompositionalLayout { sectionIndex, _ in
+            guard let sectiontype = SectionType(rawValue: sectionIndex) else { return nil }
+            
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(sectiontype.groupHeight))
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 2)
+            group.interItemSpacing = .fixed(10)
+            
+            let section = NSCollectionLayoutSection(group: group)
+            
+            let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(sectiontype.headerHeight)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+            
+            section.boundarySupplementaryItems = [header]
+            
+            return section
+        }
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .absolute(80))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
-                                                       repeatingSubitem: item,
-                                                       count: 2)
-        let spacing = CGFloat(10)
-        group.interItemSpacing = .fixed(spacing)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        
-        let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }
     
