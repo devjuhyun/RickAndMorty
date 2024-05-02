@@ -26,7 +26,7 @@ final class CharacterDetailViewModel {
         ["LOCATION", character.location.name],
     ]
     
-    private var ids: [Int] {
+    public var ids: [Int] {
         character.episode.map {
             Int($0.split(separator: "/").last ?? "") ?? 1
         }

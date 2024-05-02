@@ -119,7 +119,7 @@ extension CharacterDetailViewController {
         let episodeFooterRegistration = EpisodeSupplementaryRegistration(elementKind: UICollectionView.elementKindSectionFooter, handler: { [weak self] cell, _, indexPath in
             guard let self = self else { return }
             var content = cell.defaultContentConfiguration()
-            content.text = "\(self.vm.episodes.count) episodes"
+            content.text = "\(self.vm.ids.count) episodes"
             cell.contentConfiguration = content
         })
         
