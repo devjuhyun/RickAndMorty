@@ -9,16 +9,18 @@ import UIKit
 import Combine
 
 final class CharacterDetailViewController: UIViewController {
+    
+    // MARK: - Typealias
+    private typealias DiffableDataSource = UICollectionViewDiffableDataSource<SectionType, AnyHashable>
+    private typealias InfoCellRegistration = UICollectionView.CellRegistration<InfoCell, [String]>
+    private typealias EpisodeCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, Episode>
+    private typealias ImageHeaderRegistration = UICollectionView.SupplementaryRegistration<ImageHeaderView>
+    private typealias EpisodeSupplementaryRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>
+
     // MARK: - Properties
     private let vm: CharacterDetailViewModel
     private var cancellables = Set<AnyCancellable>()
     private var dataSource: DiffableDataSource! = nil
-    
-    private typealias DiffableDataSource = UICollectionViewDiffableDataSource<SectionType, AnyHashable>
-    private typealias InfoCellRegistration = UICollectionView.CellRegistration<InfoCell, [String]>
-    private typealias EpisodeCellRegistration = UICollectionView.CellRegistration<InfoCell, Episode>
-    private typealias ImageHeaderRegistration = UICollectionView.SupplementaryRegistration<ImageHeaderView>
-    private typealias TitleHeaderRegistration = UICollectionView.SupplementaryRegistration<TitleHeaderView>
     
     // MARK: - UI Components
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
@@ -70,10 +72,9 @@ final class CharacterDetailViewController: UIViewController {
 
 // MARK: - UICollectionView Configuration
 extension CharacterDetailViewController {
-    func configureCollectionView() {
+    private func configureCollectionView() {
         collectionView.register(ImageHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ImageHeaderView.identifier)
         collectionView.register(InfoCell.self, forCellWithReuseIdentifier: InfoCell.identifier)
-        collectionView.register(TitleHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleHeaderView.identifier)
     }
     
     private func configureCell() {
@@ -82,7 +83,12 @@ extension CharacterDetailViewController {
         }
         
         let episodeCellRegistration = EpisodeCellRegistration { (cell, _, episode) in
-            cell.configure(title: episode.name, value: episode.episode)
+            var context = cell.defaultContentConfiguration()
+            context.text = episode.name
+            context.textProperties.font = .preferredFont(forTextStyle: .body)
+            context.secondaryText = episode.episode
+            cell.contentConfiguration = context
+            cell.accessories = [.disclosureIndicator()]
         }
         
         dataSource = DiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
@@ -102,22 +108,34 @@ extension CharacterDetailViewController {
             imageHeaderView.configure(imageString: self.vm.character.image)
         }
         
-        let titleHeaderRegistration = TitleHeaderRegistration(elementKind: UICollectionView.elementKindSectionHeader) { titleHeaderView, _, _ in
-            titleHeaderView.configure(title: "Episodes")
-        }
+        let episodeHeaderRegistration = EpisodeSupplementaryRegistration(elementKind: UICollectionView.elementKindSectionHeader, handler: { cell, _, indexPath in
+            var content = cell.defaultContentConfiguration()
+            content.text = "Appearance List"
+            content.textProperties.font = .boldSystemFont(ofSize: 20)
+            content.textProperties.color = .systemGreen
+            cell.contentConfiguration = content
+        })
         
-        dataSource.supplementaryViewProvider = { (collectionView, _, indexPath) in
+        let episodeFooterRegistration = EpisodeSupplementaryRegistration(elementKind: UICollectionView.elementKindSectionFooter, handler: { [weak self] cell, _, indexPath in
+            guard let self = self else { return }
+            var content = cell.defaultContentConfiguration()
+            content.text = "\(self.vm.episodes.count) episodes"
+            cell.contentConfiguration = content
+        })
+        
+        dataSource.supplementaryViewProvider = { (collectionView, kind, indexPath) in
             guard let sectionType = SectionType(rawValue: indexPath.section) else { fatalError("SectionType is nil") }
             
             switch sectionType {
             case .info:
                 return collectionView.dequeueConfiguredReusableSupplementary(using: imageHeaderRegistration, for: indexPath)
             case .episode:
-                return collectionView.dequeueConfiguredReusableSupplementary(using: titleHeaderRegistration, for: indexPath)
+                return collectionView.dequeueConfiguredReusableSupplementary(using: kind == UICollectionView.elementKindSectionHeader ? episodeHeaderRegistration : episodeFooterRegistration, for: indexPath)
             }
         }
     }
     
+    // reload data
     private func updateSnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<SectionType, AnyHashable>()
         snapshot.appendSections([.info])
@@ -128,26 +146,41 @@ extension CharacterDetailViewController {
     }
     
     private func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { sectionIndex, _ in
-            guard let sectiontype = SectionType(rawValue: sectionIndex) else { return nil }
+        return UICollectionViewCompositionalLayout { [weak self] sectionIndex, layoutEnvironment in
+            guard let self = self else { return nil }
             
-            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            
-            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(sectiontype.groupHeight))
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 2)
-            group.interItemSpacing = .fixed(10)
-            
-            let section = NSCollectionLayoutSection(group: group)
-            
-            let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(sectiontype.headerHeight)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-            
-            section.boundarySupplementaryItems = [header]
-            
-            return section
+            if sectionIndex == 0 {
+                return self.createInfoSection()
+            } else {
+                return self.createEpisodeSection(layoutEnvironment)
+            }
         }
-        
-        return layout
     }
     
+    private func createInfoSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.22))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 2)
+        group.interItemSpacing = .fixed(10)
+        group.contentInsets.bottom = 8
+        
+        let section = NSCollectionLayoutSection(group: group)
+        
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.7)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        
+        section.boundarySupplementaryItems = [header]
+        
+        return section
+    }
+    
+    private func createEpisodeSection(_ layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
+        var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+        configuration.headerMode = .supplementary
+        configuration.footerMode = .supplementary
+        
+        let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
+        return section
+    }
 }

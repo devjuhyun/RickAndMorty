@@ -10,24 +10,6 @@ import Foundation
 public enum SectionType: Int {
     case info
     case episode
-    
-    var groupHeight: Double {
-        switch self {
-        case .info:
-            return 0.2
-        case .episode:
-            return 1.3
-        }
-    }
-    
-    var headerHeight: Double {
-        switch self {
-        case .info:
-            return 0.7
-        case .episode:
-            return 0.2
-        }
-    }
 }
 
 final class CharacterDetailViewModel {
@@ -36,12 +18,12 @@ final class CharacterDetailViewModel {
     private let requestManager: RequestManagerProtocol
     
     lazy var characterInfo = [
-        ["Status", character.status.text],
-        ["Gender", character.gender.text],
-        ["Species", character.species],
-        ["Created", character.createdString],
-        ["Origin", character.origin.name],
-        ["Location", character.location.name],
+        ["STATUS", character.status.text],
+        ["GENDER", character.gender.text],
+        ["SPECIES", character.species],
+        ["CREATED", character.createdString],
+        ["ORIGIN", character.origin.name],
+        ["LOCATION", character.location.name],
     ]
     
     private var ids: [Int] {

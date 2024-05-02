@@ -101,7 +101,7 @@ extension EpisodeDetailViewController: UICollectionViewDelegate, UICollectionVie
             fatalError("Failed to dequeue TitleHeaderView")
         }
         
-        header.configure(title: "Appearances")
+        header.configure(title: "APPEARANCES")
         
         return header
     }

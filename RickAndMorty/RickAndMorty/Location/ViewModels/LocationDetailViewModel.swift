@@ -19,12 +19,12 @@ final class LocationDetailViewModel {
     }
     
     public lazy var locationInfo = [
-        ["Type", location.type],
-        ["Dimension", location.dimension]
+        ["TYPE", location.type],
+        ["DIMENSION", location.dimension]
     ]
     
     public var headerTitle: String {
-        ids.isEmpty ? "No one lives here 👻" : "Residents "
+        ids.isEmpty ? "NO ONE LIVES HERE 👻" : "RESIDENTS"
     }
     
     init(location: Location,

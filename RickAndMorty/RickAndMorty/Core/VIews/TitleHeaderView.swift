@@ -14,7 +14,7 @@ final class TitleHeaderView: UICollectionReusableView {
     // MARK: - UI Components
     private let label: UILabel = {
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 23)
+        label.font = .boldSystemFont(ofSize: 20)
         label.textColor = .systemGreen
         return label
     }()
