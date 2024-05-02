@@ -15,8 +15,8 @@ final class CharacterDetailViewController: UIViewController {
     private var dataSource: DiffableDataSource! = nil
     
     private typealias DiffableDataSource = UICollectionViewDiffableDataSource<SectionType, AnyHashable>
-    private typealias InfoCellRegistration = UICollectionView.CellRegistration<InfoCollectionViewCell, [String]>
-    private typealias EpisodeCellRegistration = UICollectionView.CellRegistration<InfoCollectionViewCell, Episode>
+    private typealias InfoCellRegistration = UICollectionView.CellRegistration<InfoCell, [String]>
+    private typealias EpisodeCellRegistration = UICollectionView.CellRegistration<InfoCell, Episode>
     private typealias ImageHeaderRegistration = UICollectionView.SupplementaryRegistration<ImageHeaderView>
     private typealias TitleHeaderRegistration = UICollectionView.SupplementaryRegistration<TitleHeaderView>
     
@@ -72,16 +72,16 @@ final class CharacterDetailViewController: UIViewController {
 extension CharacterDetailViewController {
     func configureCollectionView() {
         collectionView.register(ImageHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ImageHeaderView.identifier)
-        collectionView.register(InfoCollectionViewCell.self, forCellWithReuseIdentifier: InfoCollectionViewCell.identifier)
+        collectionView.register(InfoCell.self, forCellWithReuseIdentifier: InfoCell.identifier)
         collectionView.register(TitleHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleHeaderView.identifier)
     }
     
     private func configureCell() {
-        let infoCellRegistration = InfoCellRegistration { (cell, indexPath, info) in
+        let infoCellRegistration = InfoCellRegistration { (cell, _, info) in
             cell.configure(title: info[0], value: info[1])
         }
         
-        let episodeCellRegistration = EpisodeCellRegistration { (cell, indexPath, episode) in
+        let episodeCellRegistration = EpisodeCellRegistration { (cell, _, episode) in
             cell.configure(title: episode.name, value: episode.episode)
         }
         
@@ -98,16 +98,17 @@ extension CharacterDetailViewController {
     }
     
     private func configureHeader() {
-        let imageHeaderRegistration = ImageHeaderRegistration(elementKind: UICollectionView.elementKindSectionHeader) { imageHeaderView, elementKind, indexPath in
+        let imageHeaderRegistration = ImageHeaderRegistration(elementKind: UICollectionView.elementKindSectionHeader) { imageHeaderView, _, _ in
             imageHeaderView.configure(imageString: self.vm.character.image)
         }
         
-        let titleHeaderRegistration = TitleHeaderRegistration(elementKind: UICollectionView.elementKindSectionHeader) { titleHeaderView, elementKind, indexPath in
+        let titleHeaderRegistration = TitleHeaderRegistration(elementKind: UICollectionView.elementKindSectionHeader) { titleHeaderView, _, _ in
             titleHeaderView.configure(title: "Episodes")
         }
         
-        dataSource.supplementaryViewProvider = { (collectionView, kind, indexPath) in
+        dataSource.supplementaryViewProvider = { (collectionView, _, indexPath) in
             guard let sectionType = SectionType(rawValue: indexPath.section) else { fatalError("SectionType is nil") }
+            
             switch sectionType {
             case .info:
                 return collectionView.dequeueConfiguredReusableSupplementary(using: imageHeaderRegistration, for: indexPath)

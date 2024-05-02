@@ -1,5 +1,5 @@
 //
-//  InfoCollectionViewCell.swift
+//  InfoCell.swift
 //  RickAndMorty
 //
 //  Created by Juhyun Yun on 4/26/24.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-final class InfoCollectionViewCell: UICollectionViewCell {
+final class InfoCell: UICollectionViewCell {
     
-    static let identifier = "InfoCollectionViewCell"
+    static let identifier = "InfoCell"
     
     // MARK: - UI Components
     private let titleLabel: UILabel = {

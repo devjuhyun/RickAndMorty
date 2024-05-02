@@ -23,7 +23,7 @@ final class CharacterViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.prefetchDataSource = self
-        collectionView.register(CharacterCollectionViewCell.self, forCellWithReuseIdentifier: CharacterCollectionViewCell.indentifier)
+        collectionView.register(CharacterCell.self, forCellWithReuseIdentifier: CharacterCell.indentifier)
         return collectionView
     }()
     
@@ -87,8 +87,8 @@ extension CharacterViewController: UICollectionViewDelegate, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterCollectionViewCell.indentifier, for: indexPath) as? CharacterCollectionViewCell else {
-            fatalError("Failed to dequeue CharacterCollectionViewCell")
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterCell.indentifier, for: indexPath) as? CharacterCell else {
+            fatalError("Failed to dequeue CharacterCell")
         }
         
         let character = vm.characters[indexPath.row]

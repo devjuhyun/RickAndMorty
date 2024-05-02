@@ -1,5 +1,5 @@
 //
-//  CharacterCollectionViewCell.swift
+//  CharacterCell.swift
 //  RickAndMorty
 //
 //  Created by Juhyun Yun on 4/16/24.
@@ -9,9 +9,9 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-final class CharacterCollectionViewCell: UICollectionViewCell {
+final class CharacterCell: UICollectionViewCell {
     
-    static let indentifier = "CharacterCollectionViewCell"
+    static let indentifier = "CharacterCell"
     
     // MARK: - UI Components
     private let imageView: UIImageView = {
@@ -43,7 +43,7 @@ final class CharacterCollectionViewCell: UICollectionViewCell {
     
 }
 
-extension CharacterCollectionViewCell {
+extension CharacterCell {
     // MARK: - Helpers
     public func configure(with character: RMCharacter) {
         guard let url = URL(string: character.image) else { return }

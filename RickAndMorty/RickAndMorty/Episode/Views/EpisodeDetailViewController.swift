@@ -22,7 +22,7 @@ final class EpisodeDetailViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(TitleHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleHeaderView.identifier)
-        collectionView.register(CharacterCollectionViewCell.self, forCellWithReuseIdentifier: CharacterCollectionViewCell.indentifier)
+        collectionView.register(CharacterCell.self, forCellWithReuseIdentifier: CharacterCell.indentifier)
         return collectionView
     }()
     
@@ -75,8 +75,8 @@ extension EpisodeDetailViewController: UICollectionViewDelegate, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterCollectionViewCell.indentifier, for: indexPath) as? CharacterCollectionViewCell else {
-            fatalError("Failed to dequeue CharacterCollectionViewCell")
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterCell.indentifier, for: indexPath) as? CharacterCell else {
+            fatalError("Failed to dequeue CharacterCell")
         }
         
         let character = vm.characters[indexPath.row]

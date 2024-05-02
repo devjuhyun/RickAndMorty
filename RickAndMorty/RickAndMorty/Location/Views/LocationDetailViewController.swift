@@ -22,8 +22,8 @@ final class LocationDetailViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(TitleHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleHeaderView.identifier)
-        collectionView.register(InfoCollectionViewCell.self, forCellWithReuseIdentifier: InfoCollectionViewCell.identifier)
-        collectionView.register(CharacterCollectionViewCell.self, forCellWithReuseIdentifier: CharacterCollectionViewCell.indentifier)
+        collectionView.register(InfoCell.self, forCellWithReuseIdentifier: InfoCell.identifier)
+        collectionView.register(CharacterCell.self, forCellWithReuseIdentifier: CharacterCell.indentifier)
         return collectionView
     }()
     
@@ -85,8 +85,8 @@ extension LocationDetailViewController: UICollectionViewDelegate, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InfoCollectionViewCell.identifier, for: indexPath) as? InfoCollectionViewCell else {
-                fatalError("Failed to dequeue InfoCollectionViewCell")
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InfoCell.identifier, for: indexPath) as? InfoCell else {
+                fatalError("Failed to dequeue InfoCell")
             }
             
             let data = vm.locationInfo[indexPath.row]
@@ -94,8 +94,8 @@ extension LocationDetailViewController: UICollectionViewDelegate, UICollectionVi
             
             return cell
         } else {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterCollectionViewCell.indentifier, for: indexPath) as? CharacterCollectionViewCell else {
-                fatalError("Failed to dequeue CharacterCollectionViewCell")
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterCell.indentifier, for: indexPath) as? CharacterCell else {
+                fatalError("Failed to dequeue CharacterCell")
             }
             
             let character = vm.residents[indexPath.row]
