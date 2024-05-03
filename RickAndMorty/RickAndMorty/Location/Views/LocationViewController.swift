@@ -11,7 +11,14 @@ import Combine
 
 final class LocationViewController: UIViewController {
     
+    private enum Section {
+        case main
+    }
+    
+    private typealias DiffableDataSource = UITableViewDiffableDataSource<Section, Location>
+    
     private let vm = LocationViewModel()
+    private var dataSource: DiffableDataSource! = nil
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
@@ -19,7 +26,6 @@ final class LocationViewController: UIViewController {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.prefetchDataSource = self
-        tableView.dataSource = self
         tableView.delegate = self
         return tableView
     }()
@@ -49,13 +55,14 @@ extension LocationViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
         bind()
         setSearchControllerListener()
+        configureDataSource()
     }
     
     private func bind() {
         vm.$locations
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
-                self?.tableView.reloadData()
+                self?.updateSnapshot()
             }.store(in: &cancellables)
     }
     
@@ -78,20 +85,26 @@ extension LocationViewController {
 }
 
 // MARK: - UITableView Methods
-extension LocationViewController: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return vm.locations.count
+extension LocationViewController: UITableViewDelegate, UITableViewDataSourcePrefetching {
+    private func configureDataSource() {
+        dataSource = DiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, itemIdentifier in
+            guard let self = self else { return nil }
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+            
+            let location = self.vm.locations[indexPath.row]
+            cell.textLabel?.text = location.name
+            cell.accessoryType = .disclosureIndicator
+            cell.selectionStyle = .none
+            
+            return cell
+        })
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        
-        let location = vm.locations[indexPath.row]
-        cell.textLabel?.text = location.name
-        cell.accessoryType = .disclosureIndicator
-        cell.selectionStyle = .none
-        
-        return cell
+    private func updateSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Location>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(vm.locations)
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

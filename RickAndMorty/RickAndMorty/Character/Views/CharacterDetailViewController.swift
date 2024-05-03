@@ -153,7 +153,7 @@ extension CharacterDetailViewController: UICollectionViewDelegate {
         snapshot.appendItems(vm.characterInfo)
         snapshot.appendSections([.episode])
         snapshot.appendItems(vm.episodes)
-        dataSource.apply(snapshot, animatingDifferences: false)
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     private func createLayout() -> UICollectionViewLayout {

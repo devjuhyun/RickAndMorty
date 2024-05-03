@@ -11,8 +11,15 @@ import Combine
 
 final class CharacterViewController: UIViewController {
     
+    private enum Section {
+        case main
+    }
+    
+    private typealias DiffableDataSource = UICollectionViewDiffableDataSource<Section, RMCharacter>
+    
     private let vm = CharacterViewModel()
     private var cancellables = Set<AnyCancellable>()
+    private var dataSource: DiffableDataSource! = nil
     
     // MARK: - UI Components
     private lazy var collectionView = {
@@ -21,7 +28,6 @@ final class CharacterViewController: UIViewController {
         layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.delegate = self
-        collectionView.dataSource = self
         collectionView.prefetchDataSource = self
         collectionView.register(CharacterCell.self, forCellWithReuseIdentifier: CharacterCell.indentifier)
         return collectionView
@@ -52,13 +58,14 @@ extension CharacterViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
         bind()
         setSearchControllerListener()
+        configureDataSource()
     }
     
     private func bind() {
         vm.$characters
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
-                self?.collectionView.reloadData()
+                self?.updateSnapshot()
             }.store(in: &cancellables)
     }
     
@@ -81,20 +88,25 @@ extension CharacterViewController {
 }
 
 // MARK: - UICollectionView Methods
-extension CharacterViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return vm.characters.count
+extension CharacterViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching {
+    private func configureDataSource() {
+        dataSource = DiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, itemIdentifier in
+            guard let self = self, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterCell.indentifier, for: indexPath) as? CharacterCell else {
+                fatalError("Failed to dequeue CharacterCell")
+            }
+    
+            let character = self.vm.characters[indexPath.row]
+            cell.configure(with: character)
+    
+            return cell
+        })
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterCell.indentifier, for: indexPath) as? CharacterCell else {
-            fatalError("Failed to dequeue CharacterCell")
-        }
-        
-        let character = vm.characters[indexPath.row]
-        cell.configure(with: character)
-        
-        return cell
+    private func updateSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, RMCharacter>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(vm.characters)
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

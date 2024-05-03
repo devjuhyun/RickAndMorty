@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RMCharacter: Decodable {
+struct RMCharacter: Decodable, Hashable {
     let name: String
     let status: Status
     let species: String
@@ -31,7 +31,7 @@ struct RMCharacter: Decodable {
     }
 }
 
-enum Status: String, Codable {
+enum Status: String, Codable, Hashable {
     case alive = "Alive"
     case dead = "Dead"
     case unknown = "unknown"
@@ -48,7 +48,7 @@ enum Status: String, Codable {
     }
 }
 
-enum Gender: String, Codable {
+enum Gender: String, Codable, Hashable {
     case male = "Male"
     case female = "Female"
     case genderless = "Genderless"
@@ -68,6 +68,6 @@ enum Gender: String, Codable {
     }
 }
 
-struct CharacterLocation: Codable {
+struct CharacterLocation: Codable, Hashable {
     let name: String
 }
