@@ -89,6 +89,7 @@ extension LocationViewController: UITableViewDelegate, UITableViewDataSource, UI
         let location = vm.locations[indexPath.row]
         cell.textLabel?.text = location.name
         cell.accessoryType = .disclosureIndicator
+        cell.selectionStyle = .none
         
         return cell
     }

@@ -90,6 +90,7 @@ extension EpisodeViewController: UITableViewDelegate, UITableViewDataSource, UIT
         
         let episode = vm.episodes[indexPath.row]
         cell.configure(episode: episode)
+        cell.selectionStyle = .none
         
         return cell
     }

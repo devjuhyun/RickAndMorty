@@ -89,6 +89,7 @@ extension CharacterDetailViewController: UICollectionViewDelegate {
             context.secondaryText = episode.episode
             context.secondaryTextProperties.color = .secondaryLabel
             cell.contentConfiguration = context
+            cell.automaticallyUpdatesBackgroundConfiguration = false // disable selection
             cell.accessories = [.disclosureIndicator()]
         }
         
