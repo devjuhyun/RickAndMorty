@@ -71,8 +71,9 @@ final class CharacterDetailViewController: UIViewController {
 }
 
 // MARK: - UICollectionView Configuration
-extension CharacterDetailViewController {
+extension CharacterDetailViewController: UICollectionViewDelegate {
     private func configureCollectionView() {
+        collectionView.delegate = self
         collectionView.register(ImageHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ImageHeaderView.identifier)
         collectionView.register(InfoCell.self, forCellWithReuseIdentifier: InfoCell.identifier)
     }
@@ -85,8 +86,8 @@ extension CharacterDetailViewController {
         let episodeCellRegistration = EpisodeCellRegistration { (cell, _, episode) in
             var context = cell.defaultContentConfiguration()
             context.text = episode.name
-            context.textProperties.font = .preferredFont(forTextStyle: .body)
             context.secondaryText = episode.episode
+            context.secondaryTextProperties.color = .secondaryLabel
             cell.contentConfiguration = context
             cell.accessories = [.disclosureIndicator()]
         }
@@ -110,7 +111,7 @@ extension CharacterDetailViewController {
         
         let episodeHeaderRegistration = EpisodeSupplementaryRegistration(elementKind: UICollectionView.elementKindSectionHeader, handler: { cell, _, indexPath in
             var content = cell.defaultContentConfiguration()
-            content.text = "Appearance List"
+            content.text = "Episode List"
             content.textProperties.font = .boldSystemFont(ofSize: 20)
             content.textProperties.color = .systemGreen
             cell.contentConfiguration = content
@@ -182,5 +183,14 @@ extension CharacterDetailViewController {
         
         let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
         return section
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.section == 1 {
+            let episode = vm.episodes[indexPath.row]
+            let vm = EpisodeDetailViewModel(episode: episode)
+            let vc = EpisodeDetailViewController(vm: vm)
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }

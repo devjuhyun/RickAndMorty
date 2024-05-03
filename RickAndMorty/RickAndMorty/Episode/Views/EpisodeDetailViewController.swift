@@ -110,5 +110,12 @@ extension EpisodeDetailViewController: UICollectionViewDelegate, UICollectionVie
         let bounds = collectionView.bounds
         return CGSize(width: bounds.width, height: 50)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let rmCharacter = vm.characters[indexPath.row]
+        let vm = CharacterDetailViewModel(charater: rmCharacter)
+        let vc = CharacterDetailViewController(vm: vm)
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
 

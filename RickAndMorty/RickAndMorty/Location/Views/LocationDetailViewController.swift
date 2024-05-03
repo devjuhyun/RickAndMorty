@@ -133,4 +133,13 @@ extension LocationDetailViewController: UICollectionViewDelegate, UICollectionVi
         let bounds = collectionView.bounds
         return CGSize(width: bounds.width, height: 50)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.section == 1 {
+            let resident = vm.residents[indexPath.row]
+            let vm = CharacterDetailViewModel(charater: resident)
+            let vc = CharacterDetailViewController(vm: vm)
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
 }
