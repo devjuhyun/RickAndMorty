@@ -44,6 +44,7 @@
 		6BE0385E2BE0C25E0019CE3F /* EpisodeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE0385D2BE0C25E0019CE3F /* EpisodeDetailViewController.swift */; };
 		6BE038602BE0C3650019CE3F /* EpisodeDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE0385F2BE0C3650019CE3F /* EpisodeDetailViewModel.swift */; };
 		6BE038622BE34DEC0019CE3F /* ImageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE038612BE34DEC0019CE3F /* ImageHeaderView.swift */; };
+		6BE038642BE474BA0019CE3F /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE038632BE474BA0019CE3F /* LoadingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,6 +85,7 @@
 		6BE0385D2BE0C25E0019CE3F /* EpisodeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeDetailViewController.swift; sourceTree = "<group>"; };
 		6BE0385F2BE0C3650019CE3F /* EpisodeDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeDetailViewModel.swift; sourceTree = "<group>"; };
 		6BE038612BE34DEC0019CE3F /* ImageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHeaderView.swift; sourceTree = "<group>"; };
+		6BE038632BE474BA0019CE3F /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -237,6 +239,7 @@
 			children = (
 				6BC8AF1A2BDB680900FC8408 /* InfoCell.swift */,
 				6BE038562BE0985D0019CE3F /* TitleHeaderView.swift */,
+				6BE038632BE474BA0019CE3F /* LoadingView.swift */,
 			);
 			path = VIews;
 			sourceTree = "<group>";
@@ -409,6 +412,7 @@
 				6B1A97C52BD7A17A009E43A0 /* APIRequest.swift in Sources */,
 				6B539B162BD6027A00DF8DDE /* LocationViewModel.swift in Sources */,
 				6B8FB0442BCE4EE50038E1AC /* SceneDelegate.swift in Sources */,
+				6BE038642BE474BA0019CE3F /* LoadingView.swift in Sources */,
 				6BC8AF1B2BDB680900FC8408 /* InfoCell.swift in Sources */,
 				6B539B102BD0DAB800DF8DDE /* MainViewController.swift in Sources */,
 				6BC8AF202BDB89B700FC8408 /* EpisodeViewModel.swift in Sources */,

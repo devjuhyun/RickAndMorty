@@ -27,6 +27,8 @@ final class LocationDetailViewController: UIViewController {
         return collectionView
     }()
     
+    private let loadingView = LoadingView()
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,21 +52,29 @@ extension LocationDetailViewController {
         view.backgroundColor = .systemBackground
         navigationItem.title = vm.location.name
         navigationItem.largeTitleDisplayMode = .never
+        loadingView.isLoading = !vm.location.residents.isEmpty
         bind()
     }
     
     private func bind() {
         vm.$residents
             .receive(on: RunLoop.main)
+            .dropFirst()
             .sink { [weak self] residents in
                 self?.collectionView.reloadData()
+                self?.loadingView.isLoading = false
             }.store(in: &cancellables)
     }
     
     private func layout() {
         view.addSubview(collectionView)
+        view.addSubview(loadingView)
         
         collectionView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        loadingView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }

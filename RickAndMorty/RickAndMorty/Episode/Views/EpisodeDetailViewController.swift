@@ -26,6 +26,8 @@ final class EpisodeDetailViewController: UIViewController {
         return collectionView
     }()
     
+    private let loadingView = LoadingView()
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,21 +51,29 @@ extension EpisodeDetailViewController {
         view.backgroundColor = .systemBackground
         navigationItem.title = vm.episode.name
         navigationItem.largeTitleDisplayMode = .never
+        loadingView.isLoading = true
         bind()
     }
     
     private func bind() {
         vm.$characters
             .receive(on: RunLoop.main)
+            .dropFirst()
             .sink { [weak self] characters in
                 self?.collectionView.reloadData()
+                self?.loadingView.isLoading = false
             }.store(in: &cancellables)
     }
     
     private func layout() {
         view.addSubview(collectionView)
+        view.addSubview(loadingView)
         
         collectionView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        loadingView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }

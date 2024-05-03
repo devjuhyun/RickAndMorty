@@ -21,6 +21,7 @@ final class CharacterDetailViewController: UIViewController {
     private let vm: CharacterDetailViewModel
     private var cancellables = Set<AnyCancellable>()
     private var dataSource: DiffableDataSource! = nil
+    private let loadingView = LoadingView()
     
     // MARK: - UI Components
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
@@ -46,6 +47,7 @@ final class CharacterDetailViewController: UIViewController {
         view.backgroundColor = .systemBackground
         navigationItem.title = vm.character.name
         navigationItem.largeTitleDisplayMode = .never
+        loadingView.isLoading = true
         bind()
         configureCollectionView()
         configureCell()
@@ -56,15 +58,22 @@ final class CharacterDetailViewController: UIViewController {
     private func bind() {
         vm.$episodes
             .receive(on: RunLoop.main)
+            .dropFirst()
             .sink { [weak self] _ in
                 self?.updateSnapshot()
+                self?.loadingView.isLoading = false
             }.store(in: &cancellables)
     }
     
     private func layout() {
         view.addSubview(collectionView)
+        view.addSubview(loadingView)
         
         collectionView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        loadingView.snp.makeConstraints { make in
             make.top.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }

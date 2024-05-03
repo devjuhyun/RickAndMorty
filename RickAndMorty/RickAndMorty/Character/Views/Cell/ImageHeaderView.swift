@@ -18,7 +18,6 @@ class ImageHeaderView: UICollectionReusableView {
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 10
         imageView.clipsToBounds = true
-        imageView.backgroundColor = .red
         imageView.kf.indicatorType = .activity
         return imageView
     }()
