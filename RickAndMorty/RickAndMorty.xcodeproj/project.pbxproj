@@ -156,8 +156,12 @@
 				6BB9C16D2BDA45D000267F78 /* Character */,
 				6BB9C16E2BDA460A00267F78 /* Location */,
 				6BC8AF1C2BDB897400FC8408 /* Episode */,
-				6BCE55482BCE78A400FA29DB /* Files */,
 				6B539B0F2BD0DAB800DF8DDE /* MainViewController.swift */,
+				6B8FB0432BCE4EE50038E1AC /* SceneDelegate.swift */,
+				6B8FB0412BCE4EE50038E1AC /* AppDelegate.swift */,
+				6B8FB04A2BCE4EE60038E1AC /* Assets.xcassets */,
+				6B8FB04C2BCE4EE60038E1AC /* LaunchScreen.storyboard */,
+				6B8FB04F2BCE4EE60038E1AC /* Info.plist */,
 			);
 			path = RickAndMorty;
 			sourceTree = "<group>";
@@ -179,6 +183,7 @@
 				6B9370112BD0CA9800EA17F4 /* API */,
 				6BCE553E2BCE6AC600FA29DB /* Models */,
 				6BC8AF2B2BDF969800FC8408 /* VIews */,
+				6BE038692BEA202E0019CE3F /* Utils */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -259,19 +264,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		6BCE55482BCE78A400FA29DB /* Files */ = {
-			isa = PBXGroup;
-			children = (
-				6B8FB0432BCE4EE50038E1AC /* SceneDelegate.swift */,
-				6B8FB0412BCE4EE50038E1AC /* AppDelegate.swift */,
-				6B8FB04A2BCE4EE60038E1AC /* Assets.xcassets */,
-				6B8FB04C2BCE4EE60038E1AC /* LaunchScreen.storyboard */,
-				6B8FB04F2BCE4EE60038E1AC /* Info.plist */,
-				6BC8AF292BDF841C00FC8408 /* Extensions.swift */,
-			);
-			name = Files;
-			sourceTree = "<group>";
-		};
 		6BE038522BDF99D00019CE3F /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -317,6 +309,14 @@
 				6BE0385F2BE0C3650019CE3F /* EpisodeDetailViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		6BE038692BEA202E0019CE3F /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				6BC8AF292BDF841C00FC8408 /* Extensions.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
