@@ -95,8 +95,9 @@ extension CharacterViewController: UICollectionViewDelegate, UICollectionViewDel
                 fatalError("Failed to dequeue CharacterCell")
             }
     
-            let character = self.vm.characters[indexPath.row]
-            cell.configure(with: character)
+            if let character = self.vm.characters[safe: indexPath.row] {
+                cell.configure(with: character)
+            }
     
             return cell
         })
