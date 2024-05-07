@@ -52,17 +52,20 @@ extension LocationDetailViewController {
         view.backgroundColor = .systemBackground
         navigationItem.title = vm.location.name
         navigationItem.largeTitleDisplayMode = .never
-        loadingView.isLoading = !vm.location.residents.isEmpty
         bind()
     }
     
     private func bind() {
         vm.$residents
             .receive(on: RunLoop.main)
-            .dropFirst()
             .sink { [weak self] residents in
                 self?.collectionView.reloadData()
-                self?.loadingView.isLoading = false
+            }.store(in: &cancellables)
+        
+        vm.$isLoading
+            .receive(on: RunLoop.main)
+            .sink { [weak self] isLoading in
+                self?.loadingView.isLoading = isLoading
             }.store(in: &cancellables)
     }
     

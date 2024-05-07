@@ -10,6 +10,7 @@ import Foundation
 final class EpisodeDetailViewModel {
     public let episode: Episode
     @Published public var characters: [RMCharacter] = []
+    @Published public var isLoading = true
     private let requestManager: RequestManagerProtocol
     
     private var ids: [Int] {
@@ -30,6 +31,7 @@ final class EpisodeDetailViewModel {
             do {
                 let characters: [RMCharacter] = try await requestManager.perform(APIRequest.getMultipleCharacters(ids: ids))
                 self.characters = characters
+                isLoading = false
             } catch {
                 print(error.localizedDescription)
             }

@@ -10,6 +10,7 @@ import Foundation
 final class LocationDetailViewModel {
     public let location: Location
     @Published public var residents: [RMCharacter] = []
+    @Published public var isLoading = true
     private let requestManager: RequestManagerProtocol
     
     private var ids: [Int] {
@@ -35,11 +36,12 @@ final class LocationDetailViewModel {
     }
     
     private func fetchCharacters() {
-        if ids.isEmpty { return }
+        if ids.isEmpty { isLoading = false; return }
         
         Task {
             do {
                 residents = try await requestManager.perform(APIRequest.getMultipleCharacters(ids: ids))
+                isLoading = false
             } catch {
                 print(error.localizedDescription)
             }

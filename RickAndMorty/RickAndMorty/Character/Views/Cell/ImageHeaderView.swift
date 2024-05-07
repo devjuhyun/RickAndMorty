@@ -15,7 +15,7 @@ class ImageHeaderView: UICollectionReusableView {
     // MARK: - UIComponents
     private let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleToFill
         imageView.layer.cornerRadius = 10
         imageView.clipsToBounds = true
         imageView.kf.indicatorType = .activity

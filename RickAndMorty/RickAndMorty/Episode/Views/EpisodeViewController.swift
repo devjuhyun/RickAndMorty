@@ -13,24 +13,23 @@ import Combine
 
 final class EpisodeViewController: UIViewController {
     
+    private enum Section {
+        case season1, season2, season3, season4, season5
+    }
+    
+    private typealias DiffableDataSource = UICollectionViewDiffableDataSource<Section, Episode>
+    private typealias EpisodeCellRegistration = UICollectionView.CellRegistration<EpisodeCell, Episode>
+    private typealias HeaderRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>
+    
     private let vm = EpisodeViewModel()
     private var cancellables = Set<AnyCancellable>()
+    private var dataSource: DiffableDataSource! = nil
     
-    // MARK: - UI Components
-    private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.register(EpisodeTableViewCell.self, forCellReuseIdentifier: EpisodeTableViewCell.identifier)
-        tableView.prefetchDataSource = self
-        tableView.dataSource = self
-        tableView.delegate = self
-        return tableView
-    }()
-    
-    private lazy var searchController: UISearchController = {
-        let searchController = UISearchController()
-        searchController.searchBar.delegate = self
-        searchController.searchBar.placeholder = "Search episodes"
-        return searchController
+    private lazy var collectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
+        collectionView.register(EpisodeCell.self, forCellWithReuseIdentifier: EpisodeCell.identifier)
+        collectionView.delegate = self
+        return collectionView
     }()
     
     // MARK: - Lifecycle
@@ -45,80 +44,98 @@ final class EpisodeViewController: UIViewController {
         view.backgroundColor = .systemGroupedBackground
         title = "Episodes"
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         bind()
-        setSearchControllerListener()
+        configureDataSource()
+        configureHeader()
     }
     
     private func bind() {
         vm.$episodes
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
-                self?.tableView.reloadData()
+                self?.updateSnapshot()
             }.store(in: &cancellables)
     }
     
-    private func setSearchControllerListener() {
-        searchController.searchBar.searchTextField.textPublisher
-            .sink { [weak self] searchText in
-            self?.vm.resetEpisodes()
-            self?.vm.searchText = searchText
-            self?.vm.fetchEpisodes()
-        }.store(in: &cancellables)
-    }
-
-    
     private func layout() {
-        view.addSubview(tableView)
+        view.addSubview(collectionView)
         
-        tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        collectionView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
 }
 
-extension EpisodeViewController: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return vm.episodes.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeTableViewCell.identifier, for: indexPath) as? EpisodeTableViewCell else {
-            fatalError("Failed to dequeue EpisodeTableViewCell")
+// MARK: - UICollectionView Methods
+extension EpisodeViewController: UICollectionViewDelegate {
+    private func configureDataSource() {
+        let episodeCellRegistration = EpisodeCellRegistration { cell, _, episode in
+            cell.configure(episode: episode)
         }
         
-        let episode = vm.episodes[indexPath.row]
-        cell.configure(episode: episode)
-        cell.selectionStyle = .none
+        dataSource = DiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
+            return collectionView.dequeueConfiguredReusableCell(using: episodeCellRegistration, for: indexPath, item: item)
+        })
+    }
+    
+    private func configureHeader() {
+        let headerRegistration = HeaderRegistration(elementKind: UICollectionView.elementKindSectionHeader, handler: { cell, _, indexPath in
+            var content = cell.defaultContentConfiguration()
+            content.text = "SEASON \(indexPath.section+1)"
+            content.textProperties.font = .boldSystemFont(ofSize: 20)
+            content.textProperties.color = .systemGreen
+            cell.contentConfiguration = content
+        })
         
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
-    }
-    
-    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        for indexPath in indexPaths {
-            if vm.episodes.count-1 == indexPath.row {
-                vm.fetchEpisodes()
-            }
+        dataSource.supplementaryViewProvider = { (collectionView, kind, indexPath) in
+            return collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: indexPath)
         }
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let episode = vm.episodes[indexPath.row]
+    private func updateSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Episode>()
+        snapshot.appendSections([.season1])
+        snapshot.appendItems(vm.episodes[0])
+        snapshot.appendSections([.season2])
+        snapshot.appendItems(vm.episodes[1])
+        snapshot.appendSections([.season3])
+        snapshot.appendItems(vm.episodes[2])
+        snapshot.appendSections([.season4])
+        snapshot.appendItems(vm.episodes[3])
+        snapshot.appendSections([.season5])
+        snapshot.appendItems(vm.episodes[4])
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
+    
+    private func createLayout() -> UICollectionViewLayout {
+        let layout = UICollectionViewCompositionalLayout { sectionIndex, _ in
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .absolute(100))
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 1)
+            group.contentInsets.trailing = 16
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+            section.contentInsets.leading = 16
+            section.contentInsets.bottom = 16
+            
+            let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.1)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+            
+            section.boundarySupplementaryItems = [header]
+            
+            return section
+        }
+        
+        return layout
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let episode = vm.episodes[indexPath.section][indexPath.row]
         let vm = EpisodeDetailViewModel(episode: episode)
         let vc = EpisodeDetailViewController(vm: vm)
         navigationController?.pushViewController(vc, animated: true)
-    }
-}
-
-// MARK: - UISearchController Methods
-extension EpisodeViewController: UISearchBarDelegate {
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        vm.resetEpisodes()
-        vm.fetchEpisodes()
     }
 }

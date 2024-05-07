@@ -51,17 +51,20 @@ extension EpisodeDetailViewController {
         view.backgroundColor = .systemBackground
         navigationItem.title = vm.episode.name
         navigationItem.largeTitleDisplayMode = .never
-        loadingView.isLoading = true
         bind()
     }
     
     private func bind() {
         vm.$characters
             .receive(on: RunLoop.main)
-            .dropFirst()
             .sink { [weak self] characters in
                 self?.collectionView.reloadData()
-                self?.loadingView.isLoading = false
+            }.store(in: &cancellables)
+        
+        vm.$isLoading
+            .receive(on: RunLoop.main)
+            .sink { [weak self] isLoading in
+                self?.loadingView.isLoading = isLoading
             }.store(in: &cancellables)
     }
     

@@ -1,5 +1,5 @@
 //
-//  EpisodeTableViewCell.swift
+//  EpisodeCell.swift
 //  RickAndMorty
 //
 //  Created by Juhyun Yun on 4/26/24.
@@ -8,15 +8,14 @@
 import UIKit
 import SnapKit
 
-final class EpisodeTableViewCell: UITableViewCell {
+final class EpisodeCell: UICollectionViewCell {
     
-    static let identifier = "EpisodeTableViewCell"
+    static let identifier = "EpisodeCell"
     
     // MARK: - UI Components
     private let episodeLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .systemGreen
-        label.font = .boldSystemFont(ofSize: 17)
+        label.font = .systemFont(ofSize: 16)
         return label
     }()
     
@@ -28,7 +27,7 @@ final class EpisodeTableViewCell: UITableViewCell {
     
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 17)
+        label.font = .systemFont(ofSize: 16)
         label.textColor = .secondaryLabel
         return label
     }()
@@ -42,8 +41,8 @@ final class EpisodeTableViewCell: UITableViewCell {
     }()
     
     // MARK: - Init
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
         setup()
         layout()
     }
@@ -53,10 +52,12 @@ final class EpisodeTableViewCell: UITableViewCell {
     }
 }
 
-extension EpisodeTableViewCell {
+extension EpisodeCell {
     // MARK: - Helpers
     private func setup() {
-        accessoryType = .disclosureIndicator
+        backgroundColor = .secondarySystemGroupedBackground
+        layer.cornerRadius = 10
+        clipsToBounds = true
     }
     
     private func layout() {

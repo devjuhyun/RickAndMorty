@@ -8,6 +8,7 @@
 import Foundation
 
 struct RMCharacter: Decodable, Hashable {
+    let identifier = UUID()
     let name: String
     let status: Status
     let species: String
@@ -17,7 +18,6 @@ struct RMCharacter: Decodable, Hashable {
     let image: String
     let episode: [String]
     let created: String
-    
     var createdString: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSZ"
@@ -26,12 +26,24 @@ struct RMCharacter: Decodable, Hashable {
         let myDateFormatter = DateFormatter()
         myDateFormatter.dateFormat = "MMM d, yyyy"
         let convertStr = myDateFormatter.string(from: convertDate!)
-
+        
         return convertStr
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case name
+        case status
+        case species
+        case gender
+        case origin
+        case location
+        case image
+        case episode
+        case created
     }
 }
 
-enum Status: String, Codable, Hashable {
+enum Status: String, Decodable, Hashable {
     case alive = "Alive"
     case dead = "Dead"
     case unknown = "unknown"
@@ -48,7 +60,7 @@ enum Status: String, Codable, Hashable {
     }
 }
 
-enum Gender: String, Codable, Hashable {
+enum Gender: String, Decodable, Hashable {
     case male = "Male"
     case female = "Female"
     case genderless = "Genderless"
@@ -68,6 +80,11 @@ enum Gender: String, Codable, Hashable {
     }
 }
 
-struct CharacterLocation: Codable, Hashable {
+struct CharacterLocation: Decodable, Hashable {
+    let identifier = UUID()
     let name: String
+    
+    enum CodingKeys: String, CodingKey {
+        case name
+    }
 }

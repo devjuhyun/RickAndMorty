@@ -15,6 +15,7 @@ public enum SectionType: Int {
 final class CharacterDetailViewModel {
     let character: RMCharacter
     @Published var episodes: [Episode] = []
+    @Published var isLoading = true
     private let requestManager: RequestManagerProtocol
     
     lazy var characterInfo = [
@@ -40,11 +41,12 @@ final class CharacterDetailViewModel {
     }
 
     private func fetchEpisodes() {
-        if ids.isEmpty { return }
+        if ids.isEmpty { isLoading = false; return }
         
         Task {
             do {
                 episodes = try await requestManager.perform(APIRequest.getMulitpleEpisodes(ids: ids))
+                isLoading = false
             } catch {
                 print(error.localizedDescription)
             }

@@ -47,7 +47,6 @@ final class CharacterDetailViewController: UIViewController {
         view.backgroundColor = .systemBackground
         navigationItem.title = vm.character.name
         navigationItem.largeTitleDisplayMode = .never
-        loadingView.isLoading = true
         bind()
         configureCollectionView()
         configureCell()
@@ -58,10 +57,14 @@ final class CharacterDetailViewController: UIViewController {
     private func bind() {
         vm.$episodes
             .receive(on: RunLoop.main)
-            .dropFirst()
             .sink { [weak self] _ in
                 self?.updateSnapshot()
-                self?.loadingView.isLoading = false
+            }.store(in: &cancellables)
+        
+        vm.$isLoading
+            .receive(on: RunLoop.main)
+            .sink { [weak self] isLoading in
+                self?.loadingView.isLoading = isLoading
             }.store(in: &cancellables)
     }
     
