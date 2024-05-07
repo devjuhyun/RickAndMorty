@@ -20,7 +20,7 @@ final class LocationDetailViewModel {
     }
     
     public lazy var locationInfo = [
-        ["TYPE", location.type],
+        ["TYPE", location.type.isEmpty ? "❌" : location.type],
         ["DIMENSION", location.dimension]
     ]
     
