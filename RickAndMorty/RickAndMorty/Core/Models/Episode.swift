@@ -13,6 +13,9 @@ struct Episode: Decodable, Hashable {
     let episode: String
     let characters: [String]
     let airDate: String
+    var ep: Int {
+        Int(episode.split(separator: "E").last!)!
+    }
     
     enum CodingKeys: String, CodingKey {
         case name

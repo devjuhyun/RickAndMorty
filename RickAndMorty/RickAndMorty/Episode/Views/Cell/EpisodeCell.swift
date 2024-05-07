@@ -75,7 +75,7 @@ extension EpisodeCell {
     }
     
     public func configure(episode: Episode) {
-        episodeLabel.text = episode.episode
+        episodeLabel.text = "Episode \(episode.ep)"
         nameLabel.text = episode.name
         dateLabel.text = episode.airDate
     }
