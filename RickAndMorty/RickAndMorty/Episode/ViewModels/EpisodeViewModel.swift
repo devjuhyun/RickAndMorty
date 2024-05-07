@@ -8,7 +8,7 @@
 import Foundation
 
 final class EpisodeViewModel {
-    @Published var episodes: [[Episode]] = []
+    @Published public var episodes: [[Episode]] = []
     private let requestManager: RequestManagerProtocol
     
     init(requestManager: RequestManagerProtocol = RequestManager()) {
@@ -16,7 +16,7 @@ final class EpisodeViewModel {
         fetchEpisodes()
     }
     
-    func fetchEpisodes() {
+    public func fetchEpisodes() {
         Task {
             do {
                 for s in 1...5 {

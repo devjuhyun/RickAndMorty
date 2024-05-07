@@ -13,23 +13,37 @@ import Combine
 
 final class EpisodeViewController: UIViewController {
     
-    private enum Section {
-        case season1, season2, season3, season4, season5
-    }
-    
     private typealias DiffableDataSource = UICollectionViewDiffableDataSource<Section, Episode>
     private typealias EpisodeCellRegistration = UICollectionView.CellRegistration<EpisodeCell, Episode>
     private typealias HeaderRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>
-    
+
+    // MARK: - Properties
+    private enum Section: Int {
+        case season1, season2, season3, season4, season5
+    }
+        
     private let vm = EpisodeViewModel()
     private var cancellables = Set<AnyCancellable>()
     private var dataSource: DiffableDataSource! = nil
     
+    // MARK: - UI Components
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.register(EpisodeCell.self, forCellWithReuseIdentifier: EpisodeCell.identifier)
         collectionView.delegate = self
         return collectionView
+    }()
+    
+    private lazy var searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: searchResultVC)
+        searchController.searchBar.placeholder = "Search episodes"
+        return searchController
+    }()
+    
+    private lazy var searchResultVC: SearchResultViewController = {
+        let searchResultVC = SearchResultViewController()
+        searchResultVC.collectionView.delegate = self
+        return searchResultVC
     }()
     
     // MARK: - Lifecycle
@@ -44,10 +58,12 @@ final class EpisodeViewController: UIViewController {
         view.backgroundColor = .systemGroupedBackground
         title = "Episodes"
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         bind()
         configureDataSource()
         configureHeader()
+        setSearchControllerListener()
     }
     
     private func bind() {
@@ -56,6 +72,13 @@ final class EpisodeViewController: UIViewController {
             .sink { [weak self] _ in
                 self?.updateSnapshot()
             }.store(in: &cancellables)
+    }
+    
+    private func setSearchControllerListener() {
+        searchController.searchBar.searchTextField.textPublisher
+            .sink { [weak self] searchText in
+                self?.searchResultVC.updateResults(with: searchText)
+        }.store(in: &cancellables)
     }
     
     private func layout() {
@@ -95,16 +118,10 @@ extension EpisodeViewController: UICollectionViewDelegate {
     
     private func updateSnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Episode>()
-        snapshot.appendSections([.season1])
-        snapshot.appendItems(vm.episodes[0])
-        snapshot.appendSections([.season2])
-        snapshot.appendItems(vm.episodes[1])
-        snapshot.appendSections([.season3])
-        snapshot.appendItems(vm.episodes[2])
-        snapshot.appendSections([.season4])
-        snapshot.appendItems(vm.episodes[3])
-        snapshot.appendSections([.season5])
-        snapshot.appendItems(vm.episodes[4])
+        for season in 0..<5 {
+            snapshot.appendSections([Section(rawValue: season)!])
+            snapshot.appendItems(vm.episodes[season])
+        }
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
@@ -133,7 +150,7 @@ extension EpisodeViewController: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let episode = vm.episodes[indexPath.section][indexPath.row]
+        let episode = collectionView == self.collectionView ? vm.episodes[indexPath.section][indexPath.row] : searchResultVC.getSelectedEpisode(indexPath: indexPath)
         let vm = EpisodeDetailViewModel(episode: episode)
         let vc = EpisodeDetailViewController(vm: vm)
         navigationController?.pushViewController(vc, animated: true)

@@ -45,6 +45,8 @@
 		6BE038602BE0C3650019CE3F /* EpisodeDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE0385F2BE0C3650019CE3F /* EpisodeDetailViewModel.swift */; };
 		6BE038622BE34DEC0019CE3F /* ImageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE038612BE34DEC0019CE3F /* ImageHeaderView.swift */; };
 		6BE038642BE474BA0019CE3F /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE038632BE474BA0019CE3F /* LoadingView.swift */; };
+		6BE038662BE9FEE60019CE3F /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE038652BE9FEE60019CE3F /* SearchResultViewController.swift */; };
+		6BE038682BEA0DE00019CE3F /* SearchResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE038672BEA0DE00019CE3F /* SearchResultViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +88,8 @@
 		6BE0385F2BE0C3650019CE3F /* EpisodeDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeDetailViewModel.swift; sourceTree = "<group>"; };
 		6BE038612BE34DEC0019CE3F /* ImageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHeaderView.swift; sourceTree = "<group>"; };
 		6BE038632BE474BA0019CE3F /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		6BE038652BE9FEE60019CE3F /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
+		6BE038672BEA0DE00019CE3F /* SearchResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -299,6 +303,7 @@
 			children = (
 				6BE038582BE0AE9F0019CE3F /* Cell */,
 				6BC8AF1D2BDB898400FC8408 /* EpisodeViewController.swift */,
+				6BE038652BE9FEE60019CE3F /* SearchResultViewController.swift */,
 				6BE0385D2BE0C25E0019CE3F /* EpisodeDetailViewController.swift */,
 			);
 			path = Views;
@@ -308,6 +313,7 @@
 			isa = PBXGroup;
 			children = (
 				6BC8AF1F2BDB89B700FC8408 /* EpisodeViewModel.swift */,
+				6BE038672BEA0DE00019CE3F /* SearchResultViewModel.swift */,
 				6BE0385F2BE0C3650019CE3F /* EpisodeDetailViewModel.swift */,
 			);
 			path = ViewModels;
@@ -398,6 +404,7 @@
 				6B1A97BB2BD7961F009E43A0 /* APIConstants.swift in Sources */,
 				6BE038552BDF9AD80019CE3F /* LocationDetailViewModel.swift in Sources */,
 				6B8FB0462BCE4EE50038E1AC /* CharacterViewController.swift in Sources */,
+				6BE038682BEA0DE00019CE3F /* SearchResultViewModel.swift in Sources */,
 				6BC8AF1E2BDB898400FC8408 /* EpisodeViewController.swift in Sources */,
 				6B1A97BF2BD79EB5009E43A0 /* DataParser.swift in Sources */,
 				6B9370132BD0CAA000EA17F4 /* APIManager.swift in Sources */,
@@ -413,6 +420,7 @@
 				6B539B162BD6027A00DF8DDE /* LocationViewModel.swift in Sources */,
 				6B8FB0442BCE4EE50038E1AC /* SceneDelegate.swift in Sources */,
 				6BE038642BE474BA0019CE3F /* LoadingView.swift in Sources */,
+				6BE038662BE9FEE60019CE3F /* SearchResultViewController.swift in Sources */,
 				6BC8AF1B2BDB680900FC8408 /* InfoCell.swift in Sources */,
 				6B539B102BD0DAB800DF8DDE /* MainViewController.swift in Sources */,
 				6BC8AF202BDB89B700FC8408 /* EpisodeViewModel.swift in Sources */,
