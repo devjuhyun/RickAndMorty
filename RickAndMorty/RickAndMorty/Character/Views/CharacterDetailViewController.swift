@@ -15,7 +15,7 @@ final class CharacterDetailViewController: UIViewController {
     private typealias InfoCellRegistration = UICollectionView.CellRegistration<InfoCell, [String]>
     private typealias EpisodeCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, Episode>
     private typealias ImageHeaderRegistration = UICollectionView.SupplementaryRegistration<ImageHeaderView>
-    private typealias EpisodeSupplementaryRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>
+    private typealias EpisodeFooterRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>
 
     // MARK: - Properties
     private let vm: CharacterDetailViewModel
@@ -50,7 +50,7 @@ final class CharacterDetailViewController: UIViewController {
         bind()
         configureCollectionView()
         configureCell()
-        configureHeader()
+        configureSupplementaryView()
         updateSnapshot()
     }
     
@@ -95,7 +95,17 @@ extension CharacterDetailViewController: UICollectionViewDelegate {
             cell.configure(title: info[0], value: info[1])
         }
         
-        let episodeCellRegistration = EpisodeCellRegistration { (cell, _, episode) in
+        let episodeHeaderCellRegistration = EpisodeCellRegistration { cell, indexPath, itemIdentifier in
+            var context = cell.defaultContentConfiguration()
+            context.text = "EPISODE LIST"
+            context.textProperties.color = .systemGreen
+            context.textProperties.font = .boldSystemFont(ofSize: 19)
+            cell.contentConfiguration = context
+            cell.accessories = [.outlineDisclosure()]
+            cell.tintColor = .label
+        }
+        
+        let episodeCellRegistration = EpisodeCellRegistration { (cell, indexPath, episode) in
             var context = cell.defaultContentConfiguration()
             context.text = episode.name
             context.secondaryText = episode.episode
@@ -112,25 +122,18 @@ extension CharacterDetailViewController: UICollectionViewDelegate {
             case .info:
                 return collectionView.dequeueConfiguredReusableCell(using: infoCellRegistration, for: indexPath, item: item as? [String])
             case .episode:
-                return collectionView.dequeueConfiguredReusableCell(using: episodeCellRegistration, for: indexPath, item: item as? Episode)
+                let registration = indexPath.item == 0 ? episodeHeaderCellRegistration : episodeCellRegistration
+                return collectionView.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: item as? Episode)
             }
         })
     }
     
-    private func configureHeader() {
+    private func configureSupplementaryView() {
         let imageHeaderRegistration = ImageHeaderRegistration(elementKind: UICollectionView.elementKindSectionHeader) { imageHeaderView, _, _ in
             imageHeaderView.configure(imageString: self.vm.character.image)
         }
         
-        let episodeHeaderRegistration = EpisodeSupplementaryRegistration(elementKind: UICollectionView.elementKindSectionHeader, handler: { cell, _, indexPath in
-            var content = cell.defaultContentConfiguration()
-            content.text = "Episode List"
-            content.textProperties.font = .boldSystemFont(ofSize: 20)
-            content.textProperties.color = .systemGreen
-            cell.contentConfiguration = content
-        })
-        
-        let episodeFooterRegistration = EpisodeSupplementaryRegistration(elementKind: UICollectionView.elementKindSectionFooter, handler: { [weak self] cell, _, indexPath in
+        let episodeFooterRegistration = EpisodeFooterRegistration(elementKind: UICollectionView.elementKindSectionFooter, handler: { [weak self] cell, _, indexPath in
             guard let self = self else { return }
             var content = cell.defaultContentConfiguration()
             content.text = "\(self.vm.ids.count) episodes"
@@ -144,19 +147,22 @@ extension CharacterDetailViewController: UICollectionViewDelegate {
             case .info:
                 return collectionView.dequeueConfiguredReusableSupplementary(using: imageHeaderRegistration, for: indexPath)
             case .episode:
-                return collectionView.dequeueConfiguredReusableSupplementary(using: kind == UICollectionView.elementKindSectionHeader ? episodeHeaderRegistration : episodeFooterRegistration, for: indexPath)
+                return collectionView.dequeueConfiguredReusableSupplementary(using: episodeFooterRegistration, for: indexPath)
             }
         }
     }
     
-    // reload data
     private func updateSnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<SectionType, AnyHashable>()
         snapshot.appendSections([.info])
         snapshot.appendItems(vm.characterInfo)
-        snapshot.appendSections([.episode])
-        snapshot.appendItems(vm.episodes)
         dataSource.apply(snapshot, animatingDifferences: true)
+        snapshot.appendSections([.episode])
+        var sectionSnapShot = NSDiffableDataSourceSectionSnapshot<AnyHashable>()
+        let headerItem = Episode(name: "", episode: "", characters: [], airDate: "")
+        sectionSnapShot.append([headerItem])
+        sectionSnapShot.append(vm.episodes, to: headerItem)
+        dataSource.apply(sectionSnapShot, to: .episode)
     }
     
     private func createLayout() -> UICollectionViewLayout {
@@ -191,7 +197,7 @@ extension CharacterDetailViewController: UICollectionViewDelegate {
     
     private func createEpisodeSection(_ layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
         var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-        configuration.headerMode = .supplementary
+        configuration.headerMode = .firstItemInSection
         configuration.footerMode = .supplementary
         
         let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
@@ -200,7 +206,7 @@ extension CharacterDetailViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 1 {
-            let episode = vm.episodes[indexPath.row]
+            let episode = vm.episodes[indexPath.row-1]
             let vm = EpisodeDetailViewModel(episode: episode)
             let vc = EpisodeDetailViewController(vm: vm)
             navigationController?.pushViewController(vc, animated: true)
