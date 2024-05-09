@@ -11,12 +11,9 @@ import Combine
 
 final class CharacterViewController: UIViewController {
     
-    private enum Section {
-        case main
-    }
-    
     private typealias DiffableDataSource = UICollectionViewDiffableDataSource<Section, RMCharacter>
     
+    private enum Section { case main }
     private let vm = CharacterViewModel()
     private var cancellables = Set<AnyCancellable>()
     private var dataSource: DiffableDataSource! = nil

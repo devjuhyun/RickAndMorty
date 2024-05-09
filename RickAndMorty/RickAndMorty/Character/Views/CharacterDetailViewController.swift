@@ -10,7 +10,6 @@ import Combine
 
 final class CharacterDetailViewController: UIViewController {
     
-    // MARK: - Typealias
     private typealias DiffableDataSource = UICollectionViewDiffableDataSource<SectionType, AnyHashable>
     private typealias InfoCellRegistration = UICollectionView.CellRegistration<InfoCell, [String]>
     private typealias EpisodeCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, Episode>
@@ -18,6 +17,7 @@ final class CharacterDetailViewController: UIViewController {
     private typealias EpisodeFooterRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>
 
     // MARK: - Properties
+    private enum SectionType: Int { case info, episode }
     private let vm: CharacterDetailViewModel
     private var cancellables = Set<AnyCancellable>()
     private var dataSource: DiffableDataSource! = nil

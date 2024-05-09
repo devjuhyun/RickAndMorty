@@ -18,10 +18,7 @@ final class EpisodeViewController: UIViewController {
     private typealias HeaderRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>
 
     // MARK: - Properties
-    private enum Section: Int {
-        case season1, season2, season3, season4, season5
-    }
-        
+    private enum Section: Int { case season1, season2, season3, season4, season5 }
     private let vm = EpisodeViewModel()
     private var cancellables = Set<AnyCancellable>()
     private var dataSource: DiffableDataSource! = nil

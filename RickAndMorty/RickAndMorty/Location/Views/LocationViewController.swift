@@ -11,12 +11,9 @@ import Combine
 
 final class LocationViewController: UIViewController {
     
-    private enum Section {
-        case main
-    }
-    
     private typealias DiffableDataSource = UITableViewDiffableDataSource<Section, Location>
     
+    private enum Section { case main }
     private let vm = LocationViewModel()
     private var dataSource: DiffableDataSource! = nil
     private var cancellables = Set<AnyCancellable>()

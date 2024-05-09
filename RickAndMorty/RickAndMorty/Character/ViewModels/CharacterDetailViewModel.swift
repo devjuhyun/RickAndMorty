@@ -7,11 +7,6 @@
 
 import Foundation
 
-public enum SectionType: Int {
-    case info
-    case episode
-}
-
 final class CharacterDetailViewModel {
     let character: RMCharacter
     @Published var episodes: [Episode] = []

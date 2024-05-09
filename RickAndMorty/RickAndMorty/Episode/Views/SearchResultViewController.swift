@@ -10,14 +10,11 @@ import Combine
 
 final class SearchResultViewController: UIViewController {
     
-    private enum Section {
-        case main
-    }
-    
     private typealias DiffableDataSource = UICollectionViewDiffableDataSource<Section, Episode>
     private typealias EpisodeCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, Episode>
     
     // MARK: - UI Components
+    private enum Section { case main }
     public lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
     private var dataSource: DiffableDataSource! = nil
     private let vm = SearchResultViewModel()
