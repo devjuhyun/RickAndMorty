@@ -21,7 +21,7 @@ final class LocationDetailViewModel {
     
     public lazy var locationInfo = [
         ["TYPE", location.type.isEmpty ? "❌" : location.type],
-        ["DIMENSION", location.dimension.isEmpty ? "❌" : location.type]
+        ["DIMENSION", location.dimension.isEmpty ? "❌" : location.dimension]
     ]
     
     public var headerTitle: String {
