@@ -84,11 +84,8 @@ extension LocationViewController {
 // MARK: - UITableView Methods
 extension LocationViewController: UITableViewDelegate, UITableViewDataSourcePrefetching {
     private func configureDataSource() {
-        dataSource = DiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, itemIdentifier in
-            guard let self = self else { return nil }
+        dataSource = DiffableDataSource(tableView: tableView, cellProvider: {  tableView, indexPath, location in
             let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-            
-            let location = self.vm.locations[indexPath.row]
             cell.textLabel?.text = location.name
             cell.accessoryType = .disclosureIndicator
             cell.selectionStyle = .none

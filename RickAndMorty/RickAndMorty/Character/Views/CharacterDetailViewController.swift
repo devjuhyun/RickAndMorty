@@ -129,7 +129,8 @@ extension CharacterDetailViewController: UICollectionViewDelegate {
     }
     
     private func configureSupplementaryView() {
-        let imageHeaderRegistration = ImageHeaderRegistration(elementKind: UICollectionView.elementKindSectionHeader) { imageHeaderView, _, _ in
+        let imageHeaderRegistration = ImageHeaderRegistration(elementKind: UICollectionView.elementKindSectionHeader) { [weak self] imageHeaderView, _, _ in
+            guard let self = self else { return }
             imageHeaderView.configure(imageString: self.vm.character.image)
         }
         

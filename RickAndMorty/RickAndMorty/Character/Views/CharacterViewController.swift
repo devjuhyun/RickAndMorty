@@ -87,14 +87,12 @@ extension CharacterViewController {
 // MARK: - UICollectionView Methods
 extension CharacterViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching {
     private func configureDataSource() {
-        dataSource = DiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, itemIdentifier in
-            guard let self = self, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterCell.indentifier, for: indexPath) as? CharacterCell else {
+        dataSource = DiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, character in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterCell.indentifier, for: indexPath) as? CharacterCell else {
                 fatalError("Failed to dequeue CharacterCell")
             }
     
-            if let character = self.vm.characters[safe: indexPath.row] {
-                cell.configure(with: character)
-            }
+            cell.configure(with: character)
     
             return cell
         })
