@@ -36,7 +36,7 @@ final class LocationDetailViewModel {
     }
     
     private func fetchCharacters() {
-        if ids.isEmpty { isLoading = false; return }
+        if location.residents.isEmpty { isLoading = false; return }
         
         Task {
             do {

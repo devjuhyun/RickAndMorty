@@ -36,7 +36,7 @@ final class CharacterDetailViewModel {
     }
 
     private func fetchEpisodes() {
-        if ids.isEmpty { isLoading = false; return }
+        if character.episode.isEmpty { isLoading = false; return }
         
         Task {
             do {
