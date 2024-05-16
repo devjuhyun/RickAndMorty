@@ -30,7 +30,7 @@ func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPat
 }
 ```
 
-### 2. 검색 기능
+### 2. 검색
 <img width="200" src="https://github.com/devjuhyun/RickAndMorty/assets/117050638/f27f8fd2-9886-4572-9e96-c82a2aeff383">
 
 * UISearchTextField extension에 AnyPublisher<String, Never> 타입을 반환하는 textPublisher라는 속성을 추가
