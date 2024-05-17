@@ -73,9 +73,7 @@ private func setSearchControllerListener() {
 * 뷰 컨트롤러가 초기화 될때는 LoadingView를 보여준 뒤 Task 블록 안에 네트워킹을 완료하는 시점에 LoadingView를 숨김
 
 ### 5. 다양한 컬렉션 뷰 레이아웃
-
-| <img width="200" src="https://github.com/devjuhyun/RickAndMorty/assets/117050638/be089163-29e8-419d-b83d-0d897f918aee"> | <img width="200" src="https://github.com/devjuhyun/RickAndMorty/assets/117050638/625eabfd-761c-4170-bb0a-f2b719407376"> | <img width="200" src="https://github.com/devjuhyun/RickAndMorty/assets/117050638/b8ff6bce-4621-475e-971a-1a41cec8e5cf"> |
-| ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+<img width="200" src="https://github.com/devjuhyun/RickAndMorty/assets/117050638/be089163-29e8-419d-b83d-0d897f918aee"> <img width="200" src="https://github.com/devjuhyun/RickAndMorty/assets/117050638/625eabfd-761c-4170-bb0a-f2b719407376"> <img width="200" src="https://github.com/devjuhyun/RickAndMorty/assets/117050638/b8ff6bce-4621-475e-971a-1a41cec8e5cf">
 
 * UICollectionViewCompositionalLayout을 사용하여 multiple section의 다양한 레이아웃을 구현
 
