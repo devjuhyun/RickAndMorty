@@ -1,9 +1,9 @@
 # Rick And Morty
-## 사용한 기술
+## 기술 스택
 * UIKit
 * MVVM
 * Combine
-* Concurrency
+* Swift Concurrency
 * Kingfisher
 * Snapkit
 * SPM
