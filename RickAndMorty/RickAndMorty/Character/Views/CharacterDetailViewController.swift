@@ -184,8 +184,8 @@ extension CharacterDetailViewController: UICollectionViewDelegate {
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.22))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 2)
-        group.interItemSpacing = .fixed(10)
-        group.contentInsets.bottom = 8
+        group.interItemSpacing = .fixed(16)
+        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16)
         
         let section = NSCollectionLayoutSection(group: group)
         
