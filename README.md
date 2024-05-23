@@ -73,12 +73,12 @@ private func setSearchControllerListener() {
 * 뷰 컨트롤러가 초기화 될때는 LoadingView를 보여준 뒤 Task 블록 안에 네트워킹을 완료하는 시점에 LoadingView를 숨김
 
 ### 5. 다양한 컬렉션 뷰 레이아웃
-<img width="200" src="https://github.com/devjuhyun/RickAndMorty/assets/117050638/be089163-29e8-419d-b83d-0d897f918aee"> <img width="200" src="https://github.com/devjuhyun/RickAndMorty/assets/117050638/625eabfd-761c-4170-bb0a-f2b719407376"> <img width="200" src="https://github.com/devjuhyun/RickAndMorty/assets/117050638/b8ff6bce-4621-475e-971a-1a41cec8e5cf">
+<img width="200" src="https://github.com/jujubeyun/RickAndMorty/assets/117050638/a2057ead-2e07-4a01-8eec-c42f1af519a7"> <img width="200" src="https://github.com/devjuhyun/RickAndMorty/assets/117050638/625eabfd-761c-4170-bb0a-f2b719407376"> <img width="200" src="https://github.com/devjuhyun/RickAndMorty/assets/117050638/b8ff6bce-4621-475e-971a-1a41cec8e5cf">
 
 * UICollectionViewCompositionalLayout을 사용하여 multiple section의 다양한 레이아웃을 구현
 
 ### 6. Expandable List
-<img width="200" src="https://github.com/devjuhyun/RickAndMorty/assets/117050638/813a00b4-0cf0-4155-af71-e5f70b38f8c5">
+<img width="200" src="https://github.com/jujubeyun/RickAndMorty/assets/117050638/3d989b05-4e9a-448e-8a20-4cc3446b8dc7">
 
 * UICollectionViewListCell과 NSDiffableDataSourceSectionSnapshot을 사용하여 캐릭터 상세페이지에서 캐릭터가 출연한 에피소드 리스트를 접거나 펼칠 수 있게 구현
 
